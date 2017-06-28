@@ -83,6 +83,7 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         mBtnFace.setOnClickListener(this);
         mBtnMultimedia.setOnClickListener(this);
         mEtChat.setOnBackKeyClickListener(this);
+        funFunction.setOnFuncChangeListener(this);
     }
 
     protected void initFuncView() {
@@ -94,13 +95,11 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     protected void initEmoticonFuncView() {
         View keyboardView = inflateFunc();
         funFunction.addFuncView(FUNC_TYPE_EMOTION, keyboardView);
-        funFunction.setOnFuncChangeListener(this);
     }
 
     protected void initAppFuncView() {
         View keyboardView = inflateFunc();
         funFunction.addFuncView(FUNC_TYPE_APPS, keyboardView);
-        funFunction.setOnFuncChangeListener(this);
     }
 
     protected void initEditView() {
@@ -136,6 +135,18 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
                 }
             }
         });
+    }
+
+    public void setEmoticonFuncView(View emoticonFuncView) {
+        if(null != emoticonFuncView) {
+            funFunction.addFuncView(FUNC_TYPE_EMOTION, emoticonFuncView);
+        }
+    }
+
+    public void setAppFuncView(View appFuncView) {
+        if(null != appFuncView) {
+            funFunction.addFuncView(FUNC_TYPE_APPS, appFuncView);
+        }
     }
 
     public void reset() {

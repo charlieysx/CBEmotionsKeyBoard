@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.codebear.keyboard.CBEmoticonsKeyBoard;
+import com.codebear.keyboard.widget.CBEmoticonsView;
 import com.codebear.keyboard.widget.FuncLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         cbEmoticonsKeyBoard = (CBEmoticonsKeyBoard) findViewById(R.id.ekb_emoticons_keyboard);
+
+        CBEmoticonsView cbEmoticonsView = new CBEmoticonsView(this);
+        cbEmoticonsKeyBoard.setEmoticonFuncView(cbEmoticonsView);
 
         cbEmoticonsKeyBoard.addOnFuncKeyBoardListener(new FuncLayout.OnFuncKeyBoardListener() {
             @Override

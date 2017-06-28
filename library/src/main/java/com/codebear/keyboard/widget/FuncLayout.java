@@ -39,7 +39,7 @@ public class FuncLayout extends LinearLayout {
 
     public void addFuncView(int key, View view) {
         if (mFuncViewArrayMap.get(key) != null) {
-            return;
+            mFuncViewArrayMap.delete(key);
         }
         mFuncViewArrayMap.put(key, view);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
