@@ -48,6 +48,11 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
 
     protected boolean mDispatchKeyEventPreImeLock = false;
 
+    /**
+     * 用于记录软键盘关闭是手动关闭还是点击功能按钮
+     */
+    private int clickFunc = 0;
+
     public CBEmoticonsKeyBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -191,22 +196,16 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         super.OnSoftPop(height);
         funFunction.setVisibility(true);
         onFuncChange(funFunction.DEF_KEY);
-        funFunction.isAutoOpenSoft = true;
-        funFunction.isShowFunc = false;
+        clickFunc = 0;
     }
 
     @Override
     public void OnSoftClose() {
         super.OnSoftClose();
-        if (funFunction.isOnlyShowSoftKeyboard()) {
+        if (clickFunc == 0) {
             reset();
         } else {
-            if (funFunction.isAutoOpenSoft && !funFunction.isShowFunc) {
-                reset();
-                funFunction.isAutoOpenSoft = false;
-            }else {
-                onFuncChange(funFunction.getCurrentFuncKey());
-            }
+            onFuncChange(funFunction.getCurrentFuncKey());
         }
     }
 
@@ -228,8 +227,10 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
                 EmoticonsKeyboardUtils.openSoftKeyboard(mEtChat);
             }
         } else if (i == R.id.iv_face) {
+            clickFunc = FUNC_TYPE_EMOTION;
             toggleFuncView(FUNC_TYPE_EMOTION);
         } else if (i == R.id.iv_multimedia) {
+            clickFunc = FUNC_TYPE_APPS;
             toggleFuncView(FUNC_TYPE_APPS);
         }
     }

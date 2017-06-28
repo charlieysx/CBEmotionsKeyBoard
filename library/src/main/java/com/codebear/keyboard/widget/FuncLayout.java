@@ -32,9 +32,6 @@ public class FuncLayout extends LinearLayout {
 
     protected int mHeight = 0;
 
-    public boolean isShowFunc = false, isSoftOpenAgo = true;
-    public boolean isAutoOpenSoft = false;
-
     public FuncLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
@@ -63,18 +60,14 @@ public class FuncLayout extends LinearLayout {
     public void toggleFuncView(int key, boolean isSoftKeyboardPop, EditText editText) {
         if (getCurrentFuncKey() == key) {
             if (isSoftKeyboardPop) {
-                isShowFunc = true;
                 if (EmoticonsKeyboardUtils.isFullScreen((Activity) getContext())) {
                     EmoticonsKeyboardUtils.closeSoftKeyboard(editText);
                 } else {
                     EmoticonsKeyboardUtils.closeSoftKeyboard(getContext());
                 }
             } else {
-                isShowFunc = false;
-                isAutoOpenSoft = true;
                 EmoticonsKeyboardUtils.openSoftKeyboard(editText);
             }
-            isSoftOpenAgo = false;
         } else {
             if (isSoftKeyboardPop) {
                 if (EmoticonsKeyboardUtils.isFullScreen((Activity) getContext())) {
@@ -82,9 +75,6 @@ public class FuncLayout extends LinearLayout {
                 } else {
                     EmoticonsKeyboardUtils.closeSoftKeyboard(getContext());
                 }
-                isSoftOpenAgo = false;
-            } else {
-                isSoftOpenAgo = false;
             }
             showFuncView(key);
         }
