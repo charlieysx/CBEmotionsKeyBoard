@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/icon_add_nomal"
+          android:state_focused="false"
+          android:state_pressed="false"
+          android:state_selected="true"/>
+    <item android:drawable="@drawable/icon_add_nomal"
+          android:state_focused="false"
+          android:state_pressed="false"
+          android:state_selected="false"/>
+    <item android:drawable="@drawable/icon_add_press"
+          android:state_pressed="true"/>
+    <item android:drawable="@drawable/icon_add_press"
+          android:state_focused="true"
+          android:state_pressed="false"
+          android:state_selected="true"/>
+</selector>

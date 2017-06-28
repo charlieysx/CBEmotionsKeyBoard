@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.codebear.keyboard.CBEmoticonsKeyBoard
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ekb_emoticons_keyboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </LinearLayout>
+
+</com.codebear.keyboard.CBEmoticonsKeyBoard>
