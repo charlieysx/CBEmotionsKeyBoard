@@ -57,7 +57,8 @@
             android:layout_toStartOf="@+id/iv_face"
             android:background="@drawable/input_bg_gray"
             android:orientation="horizontal"
-            android:paddingBottom="5dp">
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
 
             <!--输入框-->
             <com.codebear.keyboard.widget.EmoticonsEditText
@@ -69,8 +70,8 @@
                 android:focusableInTouchMode="false"
                 android:lineSpacingExtra="4dp"
                 android:maxLines="3"
-                android:paddingEnd="5dp"
                 android:paddingStart="5dp"
+                android:paddingLeft="5dp"
                 android:textSize="16sp"/>
 
         </RelativeLayout>

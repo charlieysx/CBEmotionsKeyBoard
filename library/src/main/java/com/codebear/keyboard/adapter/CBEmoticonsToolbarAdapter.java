@@ -50,15 +50,17 @@ public class CBEmoticonsToolbarAdapter extends CBRecyclerAdapter<EmoticonsBean, 
         } else {
             holder.rlEmoticonsBg.setBackgroundColor(ContextCompat.getColor(mContext, R.color.toolbar_btn_nomal));
         }
-        Glide.with(mContext).load(get(position).getIconUri()).asBitmap().error(R.drawable.icon_face_pop).dontAnimate
-                ().into(holder.ivEmoticon);
+        Glide.with(mContext).load(get(position).getIconUri()).asBitmap().dontAnimate().into(holder.ivEmoticon);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (selectPosition == holder.getAdapterPosition()) {
+                    return;
+                }
                 notifyItemChanged(selectPosition);
                 selectPosition = holder.getAdapterPosition();
                 notifyItemChanged(selectPosition);
-                if(null != onItemClickListener) {
+                if (null != onItemClickListener) {
                     onItemClickListener.onItemClick(holder.getAdapterPosition());
                 }
             }

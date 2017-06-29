@@ -13,8 +13,13 @@ public class EmoticonsBean {
     private String parentId;
     private String id;
     private String name;
-    private String iconUri;
+    private Object iconUri;
     private String iconType;
+
+    private int rol = 3;
+    private int row = 4;
+
+    private boolean showDel;
 
     private List<EmoticonsBean> emoticonsBeanList = new ArrayList<>();
 
@@ -45,11 +50,11 @@ public class EmoticonsBean {
         this.name = name;
     }
 
-    public String getIconUri() {
+    public Object getIconUri() {
         return iconUri;
     }
 
-    public void setIconUri(String iconUri) {
+    public void setIconUri(Object iconUri) {
         this.iconUri = iconUri;
     }
 
@@ -67,5 +72,29 @@ public class EmoticonsBean {
 
     public void setEmoticonsBeanList(List<EmoticonsBean> emoticonsBeanList) {
         this.emoticonsBeanList = emoticonsBeanList;
+    }
+
+    public int getRol() {
+        return rol;
+    }
+
+    public void setRol(int rol) {
+        this.rol = rol;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public boolean isShowDel() {
+        return showDel;
+    }
+
+    public void setShowDel(boolean showDel) {
+        this.showDel = showDel;
     }
 }
