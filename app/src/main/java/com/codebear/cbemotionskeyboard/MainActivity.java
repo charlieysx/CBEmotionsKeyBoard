@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         cbEmoticonsKeyBoard.setEmoticonFuncView(cbEmoticonsView);
         cbEmoticonsKeyBoard.getEtChat().addEmoticonFilter(new EmojiFilter());
 
-        cbEmoticonsView.addEmoticonsWithName(new String[]{"default", "xd_emoticon"});
+        cbEmoticonsView.addEmoticonsWithName(new String[]{"default", "xd_emoticon", "jinguanzhang"});
 
         cbEmoticonsView.setOnEmoticonClickListener(new CBEmoticonsView.OnEmoticonClickListener() {
             @Override

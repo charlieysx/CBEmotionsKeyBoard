@@ -90,18 +90,24 @@ public class CBEmoticonAdapter extends BaseAdapter {
 
     private void showData(final ViewHolder viewHolder, final int position) {
         if (mData.getmData().get(position).getIconUri() != null) {
-            Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().dontAnimate().into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                        if ("gif".equals(mData.getmData().get(position).getIconType())) {
-                            resource = eraseColor(resource, -1);
-                            resource = eraseColor(resource, -16777216);
-                        }
+
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT && "gif".equals(mData.getmData().get(position)
+                    .getIconType())) {
+
+                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().dontAnimate().into
+                        (new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        resource = eraseColor(resource, -1);
+                        resource = eraseColor(resource, -16777216);
+
+                        viewHolder.ivIcon.setImageBitmap(resource);
                     }
-                    viewHolder.ivIcon.setImageBitmap(resource);
-                }
-            });
+                });
+            } else {
+                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().dontAnimate().into
+                        (viewHolder.ivIcon);
+            }
 
             viewHolder.rootView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
