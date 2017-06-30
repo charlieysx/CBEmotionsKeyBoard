@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("onEmoticonClick", "delete");
                     cbEmoticonsKeyBoard.delClick();
                 } else {
-                    if ("default".equals(emoticon.getParentId())) {
+                    if ("default".equals(emoticon.getParentTag())) {
                         String content = emoticon.getName();
                         if (TextUtils.isEmpty(content)) {
                             return;

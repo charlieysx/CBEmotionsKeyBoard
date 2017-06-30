@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,9 +132,12 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
 
     private void initData() {
 
+        if(emoticonsBean.getRow() == -1 || emoticonsBean.getRow() == -1) {
+            throw new IllegalArgumentException("emoticon rol and row must be > -1");
+        }
+
         size = emoticonsBean.getEmoticonsBeanList().size();
         count = emoticonsBean.getRol() * emoticonsBean.getRow();
-        Log.i("data", emoticonsBean.getRol() + " -- " + emoticonsBean.getRow());
         if (emoticonsBean.isShowDel()) {
             int p = count - 1;
             while (p <= size) {
@@ -207,6 +209,15 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
         }
         vpEmoticonContent.getAdapter().notifyDataSetChanged();
         cbvpiGuideIndicator.setPageCount(pageSize);
+    }
+
+    @Override
+    public void setSeeItem(int which) {
+        if(which == 0) {
+            vpEmoticonContent.setCurrentItem(0, false);
+        } else if(which == 1) {
+            vpEmoticonContent.setCurrentItem(pageSize);
+        }
     }
 
     @Override

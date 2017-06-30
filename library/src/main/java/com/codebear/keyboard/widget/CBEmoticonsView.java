@@ -49,6 +49,9 @@ public class CBEmoticonsView extends FrameLayout {
 
     private OnEmoticonClickListener listener;
 
+    private int lastPosition = 0;
+    private boolean click = false;
+
     public void setOnEmoticonClickListener(OnEmoticonClickListener listener) {
         this.listener = listener;
         for (ICBFragment fragment : emoticonFragments) {
@@ -93,6 +96,15 @@ public class CBEmoticonsView extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
+                if(!click) {
+                    if (lastPosition < position) {
+                        emoticonFragments.get(position).setSeeItem(0);
+                    } else if (lastPosition > position) {
+                        emoticonFragments.get(position).setSeeItem(1);
+                    }
+                }
+                click = false;
+                lastPosition = position;
                 emoticonsToolbarAdapter.setSelectPosition(position);
             }
 
@@ -115,6 +127,7 @@ public class CBEmoticonsView extends FrameLayout {
         emoticonsToolbarAdapter.setOnItemClickListener(new CBEmoticonsToolbarAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                click = true;
                 vpEmoticonsContent.setCurrentItem(position, true);
             }
         });
@@ -151,13 +164,16 @@ public class CBEmoticonsView extends FrameLayout {
         } else {
             EmoticonsBean bean = ParseDataUtils.parseDataFromFile(getContext(), name);
             if (null != bean) {
+                for (EmoticonsBean b : bean.getEmoticonsBeanList()) {
+                    b.setParentTag(name);
+                }
                 addEmoticons(bean);
             }
         }
     }
 
     public void addEmoticonsWithName(String[] nameList) {
-        for(String name : nameList) {
+        for (String name : nameList) {
             addEmoticonsWithName(name);
         }
     }
@@ -175,6 +191,7 @@ public class CBEmoticonsView extends FrameLayout {
         emoticonsBean.setBigEmoticon(false);
         for (EmojiBean emojiBean : emojiArray) {
             EmoticonsBean temp = new EmoticonsBean();
+            temp.setParentTag("default");
             temp.setParentId(emoticonsBean.getId());
             temp.setName(emojiBean.emoji);
             temp.setIconUri(emojiBean.icon);

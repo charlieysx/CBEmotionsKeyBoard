@@ -14,6 +14,7 @@ import java.util.List;
 public class EmoticonsBean {
     public static final String DEL = "del";
 
+    private String parentTag;
     private String parentId;
     private String id;
     private String name;
@@ -136,11 +137,11 @@ public class EmoticonsBean {
         }
     }
 
-    @Override
-    public String toString() {
-        return "EmoticonsBean{" + "parentId='" + parentId + '\'' + ", id='" + id + '\'' + ", name='" + name + '\'' +
-                ", iconUri=" + iconUri + ", iconType='" + iconType + '\'' + ", showName=" + showName + ", " +
-                "bigEmoticon=" + bigEmoticon + ", rol=" + rol + ", row=" + row + ", showDel=" + showDel + ", " +
-                "emoticonsBeanList=" + emoticonsBeanList + '}';
+    public String getParentTag() {
+        return parentTag;
+    }
+
+    public void setParentTag(String parentTag) {
+        this.parentTag = parentTag;
     }
 }

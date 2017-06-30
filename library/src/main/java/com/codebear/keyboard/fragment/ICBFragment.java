@@ -12,6 +12,7 @@ import com.codebear.keyboard.widget.CBEmoticonsView;
  */
 
 public interface ICBFragment {
+    void setSeeItem(int which);
     Fragment getFragment();
     void setEmoticonsBean(EmoticonsBean emoticonsBean);
     void setOnEmoticonClickListener(CBEmoticonsView.OnEmoticonClickListener listener);
