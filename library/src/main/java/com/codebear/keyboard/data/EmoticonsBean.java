@@ -1,5 +1,7 @@
 package com.codebear.keyboard.data;
 
+import com.codebear.keyboard.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,20 +12,31 @@ import java.util.List;
  */
 
 public class EmoticonsBean {
+    public static final String DEL = "del";
+
     private String parentId;
     private String id;
     private String name;
     private Object iconUri;
     private String iconType;
+    private boolean showName = false;
+    private boolean bigEmoticon = false;
 
-    private int rol = 3;
-    private int row = 4;
+    private int rol = -1;
+    private int row = -1;
 
-    private boolean showDel;
+    private boolean showDel = false;
 
     private List<EmoticonsBean> emoticonsBeanList = new ArrayList<>();
 
     public EmoticonsBean() {
+    }
+
+    public EmoticonsBean(boolean isDel) {
+        if(isDel) {
+            id = DEL;
+            iconUri = R.mipmap.icon_del;
+        }
     }
 
     public String getParentId() {
@@ -96,5 +109,38 @@ public class EmoticonsBean {
 
     public void setShowDel(boolean showDel) {
         this.showDel = showDel;
+
+    }
+
+    public boolean isShowName() {
+        return showName;
+    }
+
+    public void setShowName(boolean showName) {
+        this.showName = showName;
+    }
+
+    public boolean isBigEmoticon() {
+        return bigEmoticon;
+    }
+
+    public void setBigEmoticon(boolean bigEmoticon) {
+        this.bigEmoticon = bigEmoticon;
+        if (rol == -1 || row == -1) {
+            if (bigEmoticon) {
+                rol = 4;
+            } else {
+                rol = 7;
+            }
+            row = 3;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "EmoticonsBean{" + "parentId='" + parentId + '\'' + ", id='" + id + '\'' + ", name='" + name + '\'' +
+                ", iconUri=" + iconUri + ", iconType='" + iconType + '\'' + ", showName=" + showName + ", " +
+                "bigEmoticon=" + bigEmoticon + ", rol=" + rol + ", row=" + row + ", showDel=" + showDel + ", " +
+                "emoticonsBeanList=" + emoticonsBeanList + '}';
     }
 }

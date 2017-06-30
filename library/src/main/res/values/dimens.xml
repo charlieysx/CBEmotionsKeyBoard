@@ -6,4 +6,6 @@
 
     <dimen name="vertical_spit_view_width">0.6dp</dimen>
     <dimen name="horizontal_spit_view_height">0.6dp</dimen>
+    <dimen name="item_emoticon_size_default">32dp</dimen>
+    <dimen name="item_big_emoticon_size_default">60dp</dimen>
 </resources>

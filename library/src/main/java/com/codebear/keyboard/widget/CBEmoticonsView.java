@@ -7,17 +7,21 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.codebear.keyboard.DefEmoticons;
 import com.codebear.keyboard.R;
 import com.codebear.keyboard.adapter.CBEmoticonsToolbarAdapter;
+import com.codebear.keyboard.data.EmojiBean;
 import com.codebear.keyboard.data.EmoticonsBean;
 import com.codebear.keyboard.fragment.CBEmoticonFragment;
+import com.codebear.keyboard.fragment.ICBFragment;
+import com.codebear.keyboard.utils.ParseDataUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,6 +32,10 @@ import java.util.List;
 
 public class CBEmoticonsView extends FrameLayout {
 
+    public interface OnEmoticonClickListener {
+        void onEmoticonClick(EmoticonsBean emoticon, boolean isDel);
+    }
+
     private View rootView;
     private ViewPager vpEmoticonsContent;
     private RecyclerView rcvEmoticonsToolbar;
@@ -37,8 +45,16 @@ public class CBEmoticonsView extends FrameLayout {
     private CBEmoticonsToolbarAdapter emoticonsToolbarAdapter;
 
     private List<EmoticonsBean> emoticonsBeanList = new ArrayList<>();
-    private SparseArray<Fragment> emoticonsMap = new SparseArray<>();
-    private List<CBEmoticonFragment> emoticonFragments = new ArrayList<>();
+    private List<ICBFragment> emoticonFragments = new ArrayList<>();
+
+    private OnEmoticonClickListener listener;
+
+    public void setOnEmoticonClickListener(OnEmoticonClickListener listener) {
+        this.listener = listener;
+        for (ICBFragment fragment : emoticonFragments) {
+            fragment.setOnEmoticonClickListener(listener);
+        }
+    }
 
     public CBEmoticonsView(Context context, FragmentManager fragmentManager) {
         super(context);
@@ -58,7 +74,7 @@ public class CBEmoticonsView extends FrameLayout {
         vpEmoticonsContent.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                return emoticonFragments.get(position);
+                return emoticonFragments.get(position).getFragment();
             }
 
             @Override
@@ -96,7 +112,6 @@ public class CBEmoticonsView extends FrameLayout {
         emoticonsToolbarAdapter.setOnItemClickListener(new CBEmoticonsToolbarAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //                Toast.makeText(getContext(), "position:" + position, Toast.LENGTH_SHORT).show();
                 vpEmoticonsContent.setCurrentItem(position, true);
             }
         });
@@ -106,9 +121,11 @@ public class CBEmoticonsView extends FrameLayout {
         emoticonsToolbarAdapter.add(bean);
         emoticonsToolbarAdapter.notifyItemInserted(emoticonsBeanList.size());
 
-        CBEmoticonFragment fragment = CBEmoticonFragment.newInstance();
+        ICBFragment fragment = CBEmoticonFragment.newInstance();
         fragment.setEmoticonsBean(bean);
+        fragment.setOnEmoticonClickListener(listener);
         emoticonFragments.add(fragment);
+        vpEmoticonsContent.setOffscreenPageLimit(emoticonFragments.size());
         vpEmoticonsContent.getAdapter().notifyDataSetChanged();
     }
 
@@ -116,11 +133,49 @@ public class CBEmoticonsView extends FrameLayout {
         emoticonsToolbarAdapter.addAll(beanList);
         emoticonsToolbarAdapter.notifyItemRangeInserted(emoticonsBeanList.size() - beanList.size(), beanList.size());
 
-        for(EmoticonsBean bean : beanList) {
-            CBEmoticonFragment fragment = CBEmoticonFragment.newInstance();
+        for (EmoticonsBean bean : beanList) {
+            ICBFragment fragment = CBEmoticonFragment.newInstance();
+            fragment.setOnEmoticonClickListener(listener);
             fragment.setEmoticonsBean(bean);
             emoticonFragments.add(fragment);
         }
         vpEmoticonsContent.getAdapter().notifyDataSetChanged();
+    }
+
+    public void addEmoticonsWithName(String name) {
+        if ("default".equals(name)) {
+            addEmoticons(getDefaultEmoticon());
+        } else {
+            EmoticonsBean bean = ParseDataUtils.parseDataFromFile(getContext(), name);
+            if (null != bean) {
+                addEmoticons(bean);
+            }
+        }
+    }
+
+    public void addEmoticonsWithName(String[] nameList) {
+        for(String name : nameList) {
+            addEmoticonsWithName(name);
+        }
+    }
+
+    private EmoticonsBean getDefaultEmoticon() {
+
+        final ArrayList<EmojiBean> emojiArray = new ArrayList<>();
+        Collections.addAll(emojiArray, DefEmoticons.sEmojiArray);
+
+        EmoticonsBean emoticonsBean = new EmoticonsBean();
+        emoticonsBean.setId("default");
+        emoticonsBean.setName(emojiArray.get(0).emoji);
+        emoticonsBean.setIconUri(emojiArray.get(0).icon);
+        emoticonsBean.setShowDel(true);
+        emoticonsBean.setBigEmoticon(false);
+        for (EmojiBean emojiBean : emojiArray) {
+            EmoticonsBean temp = new EmoticonsBean();
+            temp.setName(emojiBean.emoji);
+            temp.setIconUri(emojiBean.icon);
+            emoticonsBean.getEmoticonsBeanList().add(temp);
+        }
+        return emoticonsBean;
     }
 }

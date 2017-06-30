@@ -66,6 +66,9 @@ public class CBViewPagerIndicatorView extends View {
      */
     private int selectColor = Color.WHITE;
 
+    private int widthMeasureSpec;
+    private int heightMeasureSpec;
+
     public CBViewPagerIndicatorView(Context context) {
         this(context, null);
     }
@@ -145,11 +148,13 @@ public class CBViewPagerIndicatorView extends View {
     public void setPointStrokeWidth(float pointStrokeWidth) {
         this.pointStrokeWidth = pointStrokeWidth;
         init();
+        setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
         invalidate();
     }
 
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
+        setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
         invalidate();
     }
 
@@ -185,6 +190,8 @@ public class CBViewPagerIndicatorView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        this.widthMeasureSpec = widthMeasureSpec;
+        this.heightMeasureSpec =heightMeasureSpec;
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
     }
