@@ -2,6 +2,8 @@ package com.codebear.cbemotionskeyboard;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,8 +24,10 @@ public class MainActivity extends AppCompatActivity {
 
         cbEmoticonsKeyBoard = (CBEmoticonsKeyBoard) findViewById(R.id.ekb_emoticons_keyboard);
 
-        CBEmoticonsView cbEmoticonsView = new CBEmoticonsView(this, getSupportFragmentManager());
+        CBEmoticonsView cbEmoticonsView = new CBEmoticonsView(this);
+        cbEmoticonsView.init(getSupportFragmentManager());
         cbEmoticonsKeyBoard.setEmoticonFuncView(cbEmoticonsView);
+        cbEmoticonsKeyBoard.getEtChat().addEmoticonFilter(new EmojiFilter());
 
         cbEmoticonsView.addEmoticonsWithName(new String[]{"default", "xd_emoticon"});
 
@@ -32,9 +36,20 @@ public class MainActivity extends AppCompatActivity {
             public void onEmoticonClick(EmoticonsBean emoticon, boolean isDel) {
                 if (isDel) {
                     Log.i("onEmoticonClick", "delete");
+                    cbEmoticonsKeyBoard.delClick();
                 } else {
-                    Log.i("onEmoticonClick", "bigEmoticon : " + emoticon.isBigEmoticon() + " - [" + emoticon.getName()
-                            + "] - " + emoticon.getParentId() + " - " + emoticon.getId() + "." + emoticon.getIconType());
+                    if ("default".equals(emoticon.getParentId())) {
+                        String content = emoticon.getName();
+                        if (TextUtils.isEmpty(content)) {
+                            return;
+                        }
+                        int index = cbEmoticonsKeyBoard.getEtChat().getSelectionStart();
+                        Editable editable = cbEmoticonsKeyBoard.getEtChat().getText();
+                        editable.insert(index, content);
+                    } else {
+                        Log.i("onEmoticonClick", "bigEmoticon : " + " - [" + emoticon.getName() + "] - " + emoticon
+                                .getParentId() + " - " + emoticon.getId() + "." + emoticon.getIconType());
+                    }
 
                 }
             }

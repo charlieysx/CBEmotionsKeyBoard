@@ -56,14 +56,17 @@ public class CBEmoticonsView extends FrameLayout {
         }
     }
 
-    public CBEmoticonsView(Context context, FragmentManager fragmentManager) {
+    public CBEmoticonsView(Context context) {
         super(context);
 
-        this.fragmentManager = fragmentManager;
 
         rootView = LayoutInflater.from(context).inflate(R.layout.cb_view_emoticons_default, this, false);
         addView(rootView);
 
+    }
+
+    public void init(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
         initViewPager();
         initRecycleView();
     }
@@ -172,6 +175,7 @@ public class CBEmoticonsView extends FrameLayout {
         emoticonsBean.setBigEmoticon(false);
         for (EmojiBean emojiBean : emojiArray) {
             EmoticonsBean temp = new EmoticonsBean();
+            temp.setParentId(emoticonsBean.getId());
             temp.setName(emojiBean.emoji);
             temp.setIconUri(emojiBean.icon);
             emoticonsBean.getEmoticonsBeanList().add(temp);

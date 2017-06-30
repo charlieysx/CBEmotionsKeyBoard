@@ -238,6 +238,8 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
                 EmoticonsKeyboardUtils.openSoftKeyboard(mEtChat);
             }
         } else if (i == R.id.iv_face) {
+            EmoticonsKeyboardUtils.openSoftKeyboard(mEtChat);
+            EmoticonsKeyboardUtils.closeSoftKeyboard(mEtChat);
             clickFunc = FUNC_TYPE_EMOTION;
             toggleFuncView(FUNC_TYPE_EMOTION);
         } else if (i == R.id.iv_multimedia) {
@@ -324,5 +326,13 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
 
     public AppCompatButton getBtnSend() {
         return mBtnSend;
+    }
+
+
+    public void delClick() {
+        int action = KeyEvent.ACTION_DOWN;
+        int code = KeyEvent.KEYCODE_DEL;
+        KeyEvent event = new KeyEvent(action, code);
+        mEtChat.onKeyDown(KeyEvent.KEYCODE_DEL, event);
     }
 }

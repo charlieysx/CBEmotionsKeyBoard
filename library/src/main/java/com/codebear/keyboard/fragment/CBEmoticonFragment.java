@@ -198,7 +198,7 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
                     data.setParentId(emoticonsBean.getId());
                     data.setBigEmoticon(emoticonsBean.isBigEmoticon());
                     if (null != listener) {
-                        listener.onEmoticonClick(data, data.isShowDel() && EmoticonsBean.DEL.equals(data.getId()));
+                        listener.onEmoticonClick(data, emoticonsBean.isShowDel() && EmoticonsBean.DEL.equals(data.getId()));
                     }
                 }
             });
