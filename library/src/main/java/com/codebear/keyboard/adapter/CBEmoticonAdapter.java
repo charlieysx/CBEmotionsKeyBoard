@@ -2,6 +2,7 @@ package com.codebear.keyboard.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -92,9 +93,11 @@ public class CBEmoticonAdapter extends BaseAdapter {
             Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().dontAnimate().into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    if("gif".equals(mData.getmData().get(position).getIconType())) {
-                        resource = eraseColor(resource, -1);
-                        resource = eraseColor(resource, -16777216);
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                        if ("gif".equals(mData.getmData().get(position).getIconType())) {
+                            resource = eraseColor(resource, -1);
+                            resource = eraseColor(resource, -16777216);
+                        }
                     }
                     viewHolder.ivIcon.setImageBitmap(resource);
                 }
