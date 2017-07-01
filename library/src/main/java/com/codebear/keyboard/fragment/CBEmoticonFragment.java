@@ -35,8 +35,8 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
     private Context mContext;
     private View mRootView;
 
-    ViewPager vpEmoticonContent;
-    CBViewPagerIndicatorView cbvpiGuideIndicator;
+    private ViewPager vpEmoticonContent;
+    private CBViewPagerIndicatorView cbvpiGuideIndicator;
 
     private EmoticonsBean emoticonsBean = new EmoticonsBean();
 

@@ -1,11 +1,15 @@
 
-package com.codebear.keyboard;
+package com.codebear.keyboard.emoji;
 
+import com.codebear.keyboard.R;
 import com.codebear.keyboard.data.EmojiBean;
 import com.codebear.keyboard.utils.EmojiParse;
 
 /**
  * description:
+ * <p>
+ * 参照w446108264提供的XhsEmoticonsKeyboard开源键盘解决方案
+ * github:https://github.com/w446108264/XhsEmoticonsKeyboard
  * <p>
  * Created by CodeBear on 2017/6/30.
  */

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.codebear.keyboard.emoji.DefaultEmojiFilter;
 import com.codebear.keyboard.utils.EmoticonsKeyboardUtils;
 import com.codebear.keyboard.widget.AutoHeightLayout;
 import com.codebear.keyboard.widget.EmoticonsEditText;
@@ -66,7 +67,7 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     }
 
     protected View inflateFunc() {
-        return mInflater.inflate(R.layout.cb_view_func_emoticons, null);
+        return mInflater.inflate(R.layout.cb_view_app_func_default, null);
     }
 
     protected void initView() {
@@ -135,6 +136,7 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
                 }
             }
         });
+        mEtChat.addEmoticonFilter(new DefaultEmojiFilter());
     }
 
     public void setEmoticonFuncView(View emoticonFuncView) {

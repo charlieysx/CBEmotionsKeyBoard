@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.codebear.keyboard.DefEmoticons;
+import com.codebear.keyboard.emoji.DefEmoticons;
 import com.codebear.keyboard.R;
 import com.codebear.keyboard.adapter.CBEmoticonsToolbarAdapter;
 import com.codebear.keyboard.data.EmojiBean;
@@ -62,10 +62,8 @@ public class CBEmoticonsView extends FrameLayout {
     public CBEmoticonsView(Context context) {
         super(context);
 
-
         rootView = LayoutInflater.from(context).inflate(R.layout.cb_view_emoticons_default, this, false);
         addView(rootView);
-
     }
 
     public void init(FragmentManager fragmentManager) {

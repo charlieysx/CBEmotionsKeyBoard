@@ -9,9 +9,14 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.codebear.keyboard.CBEmoticonsKeyBoard;
+import com.codebear.keyboard.data.AppFuncBean;
 import com.codebear.keyboard.data.EmoticonsBean;
+import com.codebear.keyboard.widget.CBAppFuncView;
 import com.codebear.keyboard.widget.CBEmoticonsView;
 import com.codebear.keyboard.widget.FuncLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,10 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
         cbEmoticonsKeyBoard = (CBEmoticonsKeyBoard) findViewById(R.id.ekb_emoticons_keyboard);
 
+        initEmoticonsView();
+        initAppFuncView();
+    }
+
+    private void initEmoticonsView() {
         CBEmoticonsView cbEmoticonsView = new CBEmoticonsView(this);
         cbEmoticonsView.init(getSupportFragmentManager());
         cbEmoticonsKeyBoard.setEmoticonFuncView(cbEmoticonsView);
-        cbEmoticonsKeyBoard.getEtChat().addEmoticonFilter(new EmojiFilter());
 
         cbEmoticonsView.addEmoticonsWithName(new String[]{"default", "xd_emoticon", "jinguanzhang"});
 
@@ -80,6 +89,20 @@ public class MainActivity extends AppCompatActivity {
                 cbEmoticonsKeyBoard.getEtChat().setText("");
             }
         });
+    }
 
+    private void initAppFuncView() {
+        CBAppFuncView cbAppFuncView = new CBAppFuncView(this);
+        cbEmoticonsKeyBoard.setAppFuncView(cbAppFuncView);
+        List<AppFuncBean> appFuncBeanList = new ArrayList<>();
+        appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_chat_photo, "图片"));
+        appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_chat_ptjob, "兼职"));
+        appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_chat_reply, "快捷回复"));
+        appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_location, "定位"));
+        appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_chat_photo, "图片"));
+        appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_chat_ptjob, "兼职"));
+        appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_chat_reply, "快捷回复"));
+        appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_location, "定位"));
+        cbAppFuncView.setAppFuncBeanList(appFuncBeanList);
     }
 }

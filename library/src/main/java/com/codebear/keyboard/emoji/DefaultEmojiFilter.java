@@ -1,22 +1,23 @@
-package com.codebear.cbemotionskeyboard;
+package com.codebear.keyboard.emoji;
 
 import android.text.Spannable;
 import android.widget.EditText;
 
 import com.codebear.keyboard.interfaces.EmoticonFilter;
 import com.codebear.keyboard.utils.EmoticonsKeyboardUtils;
-import com.sj.emoji.EmojiDisplay;
-import com.sj.emoji.EmojiSpan;
 
 import java.util.regex.Matcher;
 
 /**
  * description:
  * <p>
+ * 参照w446108264提供的XhsEmoticonsKeyboard开源键盘解决方案
+ * github:https://github.com/w446108264/XhsEmoticonsKeyboard
+ * <p>
  * Created by CodeBear on 2017/6/29.
  */
 
-public class EmojiFilter extends EmoticonFilter {
+public class DefaultEmojiFilter extends EmoticonFilter {
 
     private int emojiSize = -1;
 
