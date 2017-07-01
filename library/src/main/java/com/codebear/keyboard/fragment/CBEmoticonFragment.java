@@ -1,5 +1,6 @@
 package com.codebear.keyboard.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,10 +10,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.codebear.keyboard.R;
 import com.codebear.keyboard.adapter.CBEmoticonAdapter;
 import com.codebear.keyboard.data.BigEmoticonAdapterBean;
@@ -49,6 +54,8 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
     private int pageSize;
     private int size;
     private int count;
+
+    private Dialog previewDialog;
 
     private CBEmoticonsView.OnEmoticonClickListener listener;
 
@@ -132,7 +139,7 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
 
     private void initData() {
 
-        if(emoticonsBean.getRow() == -1 || emoticonsBean.getRow() == -1) {
+        if (emoticonsBean.getRow() == -1 || emoticonsBean.getRow() == -1) {
             throw new IllegalArgumentException("emoticon rol and row must be > -1");
         }
 
@@ -200,8 +207,31 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
                     data.setParentId(emoticonsBean.getId());
                     data.setBigEmoticon(emoticonsBean.isBigEmoticon());
                     if (null != listener) {
-                        listener.onEmoticonClick(data, emoticonsBean.isShowDel() && EmoticonsBean.DEL.equals(data.getId()));
+                        listener.onEmoticonClick(data, emoticonsBean.isShowDel() && EmoticonsBean.DEL.equals(data
+                                .getId()));
                     }
+                }
+            });
+            adapter.setItemTouchListener(new CBEmoticonAdapter.OnItemTouchListener() {
+                @Override
+                public boolean onItemTouch(EmoticonsBean data, MotionEvent motionEvent) {
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_UP:
+                        case MotionEvent.ACTION_CANCEL:
+                            hidePreview();
+                            break;
+                    }
+                    return false;
+                }
+            });
+            adapter.setOnItemLongClickListener(new CBEmoticonAdapter.OnItemLongClickListener() {
+
+                @Override
+                public boolean onItemLongCLick(EmoticonsBean data) {
+                    if (emoticonsBean.isBigEmoticon()) {
+                        showPreview(data);
+                    }
+                    return false;
                 }
             });
 
@@ -211,11 +241,38 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
         cbvpiGuideIndicator.setPageCount(pageSize);
     }
 
+    private ImageView previewBigEmoticon;
+
+    private void showPreview(EmoticonsBean emoticon) {
+        if (previewDialog == null) {
+            View view = View.inflate(mContext, R.layout.view_preview_big_emoticon, null);
+            previewBigEmoticon = view.findViewById(R.id.iv_preview_big_emotion);
+            previewDialog = new Dialog(mContext, R.style.preview_dialog_style);
+            previewDialog.setContentView(view);
+        }
+        if (emoticon.getIconType().equals("gif")) {
+            Glide.with(mContext).load(emoticon.getIconUri()).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .dontAnimate().into(previewBigEmoticon);
+        } else {
+            Glide.with(mContext).load(emoticon.getIconUri()).asBitmap().diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .dontAnimate().into(previewBigEmoticon);
+        }
+        if (!previewDialog.isShowing()) {
+            previewDialog.show();
+        }
+    }
+
+    private void hidePreview() {
+        if (previewDialog != null && previewDialog.isShowing()) {
+            previewDialog.dismiss();
+        }
+    }
+
     @Override
     public void setSeeItem(int which) {
-        if(which == 0) {
+        if (which == 0) {
             vpEmoticonContent.setCurrentItem(0, false);
-        } else if(which == 1) {
+        } else if (which == 1) {
             vpEmoticonContent.setCurrentItem(pageSize);
         }
     }

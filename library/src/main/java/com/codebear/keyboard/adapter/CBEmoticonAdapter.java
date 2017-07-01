@@ -31,6 +31,14 @@ public class CBEmoticonAdapter extends BaseAdapter {
         void onItemClick(EmoticonsBean data, int position, int page);
     }
 
+    public interface OnItemTouchListener {
+        boolean onItemTouch(EmoticonsBean data, MotionEvent motionEvent);
+    }
+
+    public interface OnItemLongClickListener {
+        boolean onItemLongCLick(EmoticonsBean data);
+    }
+
     private Context mContext;
     private EmoticonAdapterBean mData;
 
@@ -40,9 +48,19 @@ public class CBEmoticonAdapter extends BaseAdapter {
     private int mItemHeight;
 
     private OnItemClickListener itemClickListener;
+    private OnItemTouchListener itemTouchListener;
+    private OnItemLongClickListener itemLongClickListener;
 
     public void setItemClickListener(OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setItemTouchListener(OnItemTouchListener itemTouchListener) {
+        this.itemTouchListener = itemTouchListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener) {
+        this.itemLongClickListener = itemLongClickListener;
     }
 
     public CBEmoticonAdapter(Context mContext, EmoticonAdapterBean mData) {
@@ -112,14 +130,17 @@ public class CBEmoticonAdapter extends BaseAdapter {
             viewHolder.rootView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            break;
-                        case MotionEvent.ACTION_UP:
-                        case MotionEvent.ACTION_CANCEL:
-                            break;
+                    if (null != itemTouchListener) {
+                        return itemTouchListener.onItemTouch(mData.getmData().get(position), motionEvent);
+                    }
+                    return false;
+                }
+            });
+            viewHolder.rootView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if(null != itemLongClickListener) {
+                        itemLongClickListener.onItemLongCLick(mData.getmData().get(position));
                     }
                     return false;
                 }
