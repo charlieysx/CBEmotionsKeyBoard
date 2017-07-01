@@ -104,5 +104,11 @@ public class MainActivity extends AppCompatActivity {
         appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_chat_reply, "快捷回复"));
         appFuncBeanList.add(new AppFuncBean(R.mipmap.ic_location, "定位"));
         cbAppFuncView.setAppFuncBeanList(appFuncBeanList);
+        cbAppFuncView.setOnAppFuncClickListener(new CBAppFuncView.OnAppFuncClickListener() {
+            @Override
+            public void onAppFunClick(AppFuncBean emoticon) {
+                Log.i("click", emoticon.getTitle());
+            }
+        });
     }
 }

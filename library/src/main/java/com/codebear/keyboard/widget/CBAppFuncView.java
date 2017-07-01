@@ -47,7 +47,7 @@ public class CBAppFuncView extends FrameLayout {
 
     private OnAppFuncClickListener listener;
 
-    public void setListener(OnAppFuncClickListener listener) {
+    public void setOnAppFuncClickListener(OnAppFuncClickListener listener) {
         this.listener = listener;
     }
 
