@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.codebear.keyboard.R;
@@ -112,8 +113,8 @@ public class CBEmoticonAdapter extends BaseAdapter {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT && "gif".equals(mData.getmData().get(position)
                     .getIconType())) {
 
-                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().dontAnimate().into
-                        (new SimpleTarget<Bitmap>() {
+                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().diskCacheStrategy
+                        (DiskCacheStrategy.SOURCE).dontAnimate().into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         resource = eraseColor(resource, -1);
@@ -123,8 +124,8 @@ public class CBEmoticonAdapter extends BaseAdapter {
                     }
                 });
             } else {
-                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().dontAnimate().into
-                        (viewHolder.ivIcon);
+                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().diskCacheStrategy
+                        (DiskCacheStrategy.SOURCE).dontAnimate().into(viewHolder.ivIcon);
             }
 
             viewHolder.rootView.setOnTouchListener(new View.OnTouchListener() {
@@ -139,7 +140,7 @@ public class CBEmoticonAdapter extends BaseAdapter {
             viewHolder.rootView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    if(null != itemLongClickListener) {
+                    if (null != itemLongClickListener) {
                         itemLongClickListener.onItemLongCLick(mData.getmData().get(position));
                     }
                     return false;

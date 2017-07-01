@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         rcvContent.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(null != cbEmoticonsKeyBoard) {
+                if (null != cbEmoticonsKeyBoard) {
                     cbEmoticonsKeyBoard.reset();
                 }
                 return false;
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         cbEmoticonsView.init(getSupportFragmentManager());
         cbEmoticonsKeyBoard.setEmoticonFuncView(cbEmoticonsView);
 
-        cbEmoticonsView.addEmoticonsWithName(new String[]{"default", "xd_emoticon", "jinguanzhang"});
+        cbEmoticonsView.addEmoticonsWithName(new String[]{"default", "ali1", "ali2", "ali3", "sibi", "jinguanzhang"});
 
         cbEmoticonsView.setOnEmoticonClickListener(new CBEmoticonsView.OnEmoticonClickListener() {
             @Override
