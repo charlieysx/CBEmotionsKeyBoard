@@ -76,6 +76,7 @@ public class SoftKeyboardSizeWatchLayout extends RelativeLayout {
     public interface OnResizeListener {
         /**
          * 软键盘弹起
+         * @param height
          */
         void OnSoftPop(int height);
 

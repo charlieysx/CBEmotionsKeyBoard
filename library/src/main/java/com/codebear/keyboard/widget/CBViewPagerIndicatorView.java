@@ -5,9 +5,11 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.codebear.keyboard.R;
@@ -69,6 +71,11 @@ public class CBViewPagerIndicatorView extends View {
     private int widthMeasureSpec;
     private int heightMeasureSpec;
 
+    private Point[] points;
+
+    private float x;
+    private float y;
+
     public CBViewPagerIndicatorView(Context context) {
         this(context, null);
     }
@@ -84,7 +91,7 @@ public class CBViewPagerIndicatorView extends View {
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
-        if(null == attrs) {
+        if (null == attrs) {
             return;
         }
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CBViewPagerIndicatorView);
@@ -148,12 +155,14 @@ public class CBViewPagerIndicatorView extends View {
     public void setPointStrokeWidth(float pointStrokeWidth) {
         this.pointStrokeWidth = pointStrokeWidth;
         init();
+        setPoints();
         setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
         invalidate();
     }
 
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
+        setPoints();
         setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
         invalidate();
     }
@@ -162,7 +171,7 @@ public class CBViewPagerIndicatorView extends View {
         if (mViewPager == null) {
             return;
         }
-        pageCount = mViewPager.getAdapter().getCount();
+        setPageCount(mViewPager.getAdapter().getCount());
         this.mViewPager = mViewPager;
         this.mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -173,7 +182,7 @@ public class CBViewPagerIndicatorView extends View {
             @Override
             public void onPageSelected(int position) {
                 selectPosition = position;
-                if(selectPosition == pageCount - 1 && !showInLastPage) {
+                if (selectPosition == pageCount - 1 && !showInLastPage) {
                     setVisibility(GONE);
                 } else {
                     setVisibility(VISIBLE);
@@ -188,10 +197,21 @@ public class CBViewPagerIndicatorView extends View {
         });
     }
 
+    private void setPoints() {
+        points = new Point[pageCount];
+        float x = pointWidth / 2 + pointStrokeWidth / 2;
+        float y = pointHeight / 2 + pointStrokeWidth / 2;
+        for (int i = 0; i < pageCount; ++i) {
+            points[i] = new Point();
+            points[i].set((int) x, (int) y);
+            x += pointSpacing + pointWidth + pointStrokeWidth;
+        }
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         this.widthMeasureSpec = widthMeasureSpec;
-        this.heightMeasureSpec =heightMeasureSpec;
+        this.heightMeasureSpec = heightMeasureSpec;
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
     }
@@ -241,6 +261,42 @@ public class CBViewPagerIndicatorView extends View {
             canvas.drawCircle(x, y, pointWidth / 2, i == selectPosition ? selectPaint : unSelectPaint);
             x += pointSpacing + pointWidth + pointStrokeWidth;
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                x = event.getX();
+                y = event.getY();
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                x = event.getX();
+                y = event.getY();
+                return true;
+            case MotionEvent.ACTION_UP:
+                return checkClick();
+        }
+        return false;
+    }
+
+    private boolean checkClick() {
+        if(null != points) {
+            for (int i = 0;i < points.length;++i) {
+                Point p = points[i];
+                float rx = p.x - x;
+                float ry = p.y - y;
+                if((rx * rx + ry * ry)  <= (pointWidth * pointWidth) * 1.3) {
+                    if(i != selectPosition) {
+                        mViewPager.setCurrentItem(i, true);
+                    }
+                    x = y = 0;
+                    return true;
+                }
+            }
+        }
+        x = y = 0;
+        return false;
     }
 }
 
