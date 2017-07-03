@@ -69,9 +69,9 @@ public class CBAppFuncAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_app_func, null);
             viewHolder.rootView = convertView;
-            viewHolder.llRoot = convertView.findViewById(R.id.ll_root);
-            viewHolder.ivIcon = convertView.findViewById(R.id.iv_icon);
-            viewHolder.tvTitle = convertView.findViewById(R.id.tv_title);
+            viewHolder.llRoot = (LinearLayout) convertView.findViewById(R.id.ll_root);
+            viewHolder.ivIcon = (ImageView) convertView.findViewById(R.id.iv_icon);
+            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_title);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

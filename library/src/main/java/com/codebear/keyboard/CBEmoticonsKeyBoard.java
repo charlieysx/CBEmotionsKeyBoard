@@ -74,14 +74,14 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     }
 
     protected void initView() {
-        mBtnVoiceOrText = findViewById(R.id.iv_voice_or_text);
-        mBtnVoice = findViewById(R.id.btn_voice);
-        mEtChat = findViewById(R.id.et_chat);
-        mBtnFace = findViewById(R.id.iv_face);
-        mRlInput = findViewById(R.id.rl_input);
-        mBtnMultimedia = findViewById(R.id.iv_multimedia);
-        mBtnSend = findViewById(R.id.btn_send);
-        funFunction = findViewById(R.id.fun_function);
+        mBtnVoiceOrText = (ImageView) findViewById(R.id.iv_voice_or_text);
+        mBtnVoice = (AppCompatButton) findViewById(R.id.btn_voice);
+        mEtChat = (EmoticonsEditText) findViewById(R.id.et_chat);
+        mBtnFace = (ImageView) findViewById(R.id.iv_face);
+        mRlInput = (RelativeLayout) findViewById(R.id.rl_input);
+        mBtnMultimedia = (ImageView) findViewById(R.id.iv_multimedia);
+        mBtnSend = (AppCompatButton) findViewById(R.id.btn_send);
+        funFunction = (FuncLayout) findViewById(R.id.fun_function);
 
         mBtnVoiceOrText.setOnClickListener(this);
         mBtnFace.setOnClickListener(this);

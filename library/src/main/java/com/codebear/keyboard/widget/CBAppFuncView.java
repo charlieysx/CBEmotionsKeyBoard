@@ -61,8 +61,8 @@ public class CBAppFuncView extends FrameLayout {
     }
 
     private void initViewPager() {
-        vpAppFuncContent = rootView.findViewById(R.id.vp_app_func_content);
-        cbvpiGuideIndicator = rootView.findViewById(R.id.cbvpi_guide_indicator);
+        vpAppFuncContent = (ViewPager) rootView.findViewById(R.id.vp_app_func_content);
+        cbvpiGuideIndicator = (CBViewPagerIndicatorView) rootView.findViewById(R.id.cbvpi_guide_indicator);
 
         vpAppFuncContent.setAdapter(new PagerAdapter() {
 
@@ -109,7 +109,7 @@ public class CBAppFuncView extends FrameLayout {
         for (int i = 0; i < pageSize; ++i) {
             View view = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R
                     .layout.view_emoticon_gridview, null);
-            GridView egvEmoticon = view.findViewById(R.id.egv_emoticon);
+            GridView egvEmoticon = (GridView) view.findViewById(R.id.egv_emoticon);
             egvEmoticon.setNumColumns(rol);
 
             egvEmoticon.setMotionEventSplittingEnabled(false);

@@ -81,7 +81,7 @@ public class CBEmoticonsView extends FrameLayout implements IEmoticonsView {
     }
 
     private void initViewPager() {
-        vpEmoticonsContent = rootView.findViewById(R.id.vp_emoticons_content);
+        vpEmoticonsContent = (ViewPager) rootView.findViewById(R.id.vp_emoticons_content);
 
         vpEmoticonsContent.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
@@ -122,7 +122,7 @@ public class CBEmoticonsView extends FrameLayout implements IEmoticonsView {
     }
 
     private void initRecycleView() {
-        rcvEmoticonsToolbar = rootView.findViewById(R.id.rcv_emoticons_toolbar);
+        rcvEmoticonsToolbar = (RecyclerView) rootView.findViewById(R.id.rcv_emoticons_toolbar);
         rcvEmoticonsToolbar.setHasFixedSize(true);
         rcvEmoticonsToolbar.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,
                 false));

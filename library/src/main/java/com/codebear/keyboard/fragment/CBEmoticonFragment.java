@@ -80,8 +80,8 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        vpEmoticonContent = mRootView.findViewById(R.id.vp_emoticon_content);
-        cbvpiGuideIndicator = mRootView.findViewById(R.id.cbvpi_guide_indicator);
+        vpEmoticonContent = (ViewPager) mRootView.findViewById(R.id.vp_emoticon_content);
+        cbvpiGuideIndicator = (CBViewPagerIndicatorView) mRootView.findViewById(R.id.cbvpi_guide_indicator);
 
         initViewPager();
         initData();
@@ -179,7 +179,7 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
         for (int i = 0; i < pageSize; ++i) {
             View view = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R
                     .layout.view_emoticon_gridview, null);
-            GridView egvEmoticon = view.findViewById(R.id.egv_emoticon);
+            GridView egvEmoticon = (GridView) view.findViewById(R.id.egv_emoticon);
             egvEmoticon.setNumColumns(emoticonsBean.getRol());
 
             egvEmoticon.setMotionEventSplittingEnabled(false);
@@ -254,7 +254,7 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
     private void showPreview(EmoticonsBean emoticon) {
         if (previewDialog == null) {
             View view = View.inflate(mContext, R.layout.view_preview_big_emoticon, null);
-            previewBigEmoticon = view.findViewById(R.id.iv_preview_big_emotion);
+            previewBigEmoticon = (ImageView) view.findViewById(R.id.iv_preview_big_emotion);
             previewDialog = new Dialog(mContext, R.style.preview_dialog_style);
             previewDialog.setContentView(view);
         }

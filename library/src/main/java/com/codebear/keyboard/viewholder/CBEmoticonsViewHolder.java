@@ -21,7 +21,7 @@ public class CBEmoticonsViewHolder extends RecyclerView.ViewHolder {
     public CBEmoticonsViewHolder(View itemView) {
         super(itemView);
 
-        rlEmoticonsBg = itemView.findViewById(R.id.rl_emoticon_bg);
-        ivEmoticon = itemView.findViewById(R.id.iv_emoticon);
+        rlEmoticonsBg = (RelativeLayout) itemView.findViewById(R.id.rl_emoticon_bg);
+        ivEmoticon = (ImageView) itemView.findViewById(R.id.iv_emoticon);
     }
 }
