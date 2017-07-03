@@ -169,11 +169,11 @@ private void initAppFuncView() {
 
  * 该库把显示表情包的view跟显示功能view跟表情键盘分开来，可以实现自定义的视图
  1. 通过调用以下方法可以设置显示表情包的view
-        ```java
+       ```java
         setEmoticonFuncView(IEmoticonsView emoticonView)
-        ```
-        IEmoticonsView是表情包view统一的接口
-        ```java
+       ```
+    IEmoticonsView是表情包view统一的接口
+       ```java
         public interface IEmoticonsView {
             /**
              * 获取view视图
@@ -184,12 +184,12 @@ private void initAppFuncView() {
              */
             void openView();
         }
-        ```
+       ```
 
  2. 通过调用以下方法可以设置显示app功能的biew
-        ```java
+       ```java
         setAppFuncView(View appFuncView)
-        ```
+       ```
 
  * 该库提供了默认的表情包view:CBEmoticonsView和默认的app功能的view:CBAppFuncView
   #### 1. CBEmoticonsView的使用
