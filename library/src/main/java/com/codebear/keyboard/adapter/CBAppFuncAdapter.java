@@ -111,10 +111,10 @@ public class CBAppFuncAdapter extends BaseAdapter {
                 realItemHeight));
     }
 
-    public static class ViewHolder {
-        public View rootView;
-        public LinearLayout llRoot;
-        public ImageView ivIcon;
-        public TextView tvTitle;
+    private class ViewHolder {
+        View rootView;
+        LinearLayout llRoot;
+        ImageView ivIcon;
+        TextView tvTitle;
     }
 }

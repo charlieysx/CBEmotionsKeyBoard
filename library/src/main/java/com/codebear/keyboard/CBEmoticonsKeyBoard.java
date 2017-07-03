@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.codebear.keyboard.emoji.DefaultEmojiFilter;
+import com.codebear.keyboard.interfaces.IEmoticonsView;
 import com.codebear.keyboard.utils.EmoticonsKeyboardUtils;
 import com.codebear.keyboard.widget.AutoHeightLayout;
 import com.codebear.keyboard.widget.EmoticonsEditText;
@@ -48,6 +49,8 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     protected FuncLayout funFunction;
 
     protected boolean mDispatchKeyEventPreImeLock = false;
+
+    private IEmoticonsView iEmoticonView;
 
     /**
      * 用于记录软键盘关闭是手动关闭还是点击功能按钮
@@ -139,9 +142,10 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         mEtChat.addEmoticonFilter(new DefaultEmojiFilter());
     }
 
-    public void setEmoticonFuncView(View emoticonFuncView) {
-        if(null != emoticonFuncView) {
-            funFunction.addFuncView(FUNC_TYPE_EMOTION, emoticonFuncView);
+    public void setEmoticonFuncView(IEmoticonsView emoticonView) {
+        if(null != emoticonView && null != emoticonView.getView()) {
+            this.iEmoticonView = emoticonView;
+            funFunction.addFuncView(FUNC_TYPE_EMOTION, emoticonView.getView());
         }
     }
 
@@ -187,6 +191,7 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     public void onFuncChange(int key) {
         if (FUNC_TYPE_EMOTION == key) {
             mBtnFace.setImageResource(R.drawable.icon_softkeyboard_nomal);
+            this.iEmoticonView.openView();
         } else {
             mBtnFace.setImageResource(R.drawable.icon_face_nomal);
         }

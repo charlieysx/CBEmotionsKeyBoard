@@ -48,7 +48,7 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
     private List<View> views = new ArrayList<>();
 
     private boolean hadLoadData = false;
-    private boolean UserVisible = false;
+    private boolean userVisible = false;
     private boolean viewCreate = false;
 
     private int pageSize;
@@ -86,7 +86,7 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
         initViewPager();
         initData();
         viewCreate = true;
-        if (!hadLoadData && UserVisible) {
+        if (!hadLoadData && userVisible) {
             hadLoadData = true;
             initView();
         }
@@ -129,7 +129,7 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            UserVisible = true;
+            userVisible = true;
             if (!hadLoadData && viewCreate) {
                 hadLoadData = true;
                 initView();
@@ -141,6 +141,10 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
 
         if (emoticonsBean.getRow() == -1 || emoticonsBean.getRow() == -1) {
             throw new IllegalArgumentException("emoticon rol and row must be > -1");
+        }
+
+        if (null == emoticonsBean.getEmoticonsBeanList()) {
+            return;
         }
 
         size = emoticonsBean.getEmoticonsBeanList().size();
@@ -168,6 +172,10 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
     }
 
     private void initView() {
+        if (!viewCreate) {
+            return;
+        }
+        views.clear();
         for (int i = 0; i < pageSize; ++i) {
             View view = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R
                     .layout.view_emoticon_gridview, null);
@@ -264,6 +272,7 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
 
     private void hidePreview() {
         if (previewDialog != null && previewDialog.isShowing()) {
+            Glide.clear(previewBigEmoticon);
             previewDialog.dismiss();
         }
     }
@@ -280,6 +289,8 @@ public class CBEmoticonFragment extends Fragment implements ICBFragment {
     @Override
     public void setEmoticonsBean(EmoticonsBean emoticonsBean) {
         this.emoticonsBean = emoticonsBean;
+        initData();
+        initView();
     }
 
     @Override

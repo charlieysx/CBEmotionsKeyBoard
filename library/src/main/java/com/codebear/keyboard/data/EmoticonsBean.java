@@ -1,5 +1,8 @@
 package com.codebear.keyboard.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.codebear.keyboard.R;
 
 import java.util.ArrayList;
@@ -11,7 +14,7 @@ import java.util.List;
  * Created by CodeBear on 2017/6/28.
  */
 
-public class EmoticonsBean {
+public class EmoticonsBean implements Parcelable {
     public static final String DEL = "del";
 
     private String parentTag;
@@ -143,5 +146,51 @@ public class EmoticonsBean {
 
     public void setParentTag(String parentTag) {
         this.parentTag = parentTag;
+    }
+
+    protected EmoticonsBean(Parcel in) {
+        parentTag = in.readString();
+        parentId = in.readString();
+        id = in.readString();
+        name = in.readString();
+        iconType = in.readString();
+        showName = in.readByte() != 0;
+        bigEmoticon = in.readByte() != 0;
+        rol = in.readInt();
+        row = in.readInt();
+        showDel = in.readByte() != 0;
+        emoticonsBeanList = in.createTypedArrayList(EmoticonsBean.CREATOR);
+    }
+
+    public static final Creator<EmoticonsBean> CREATOR = new Creator<EmoticonsBean>() {
+        @Override
+        public EmoticonsBean createFromParcel(Parcel in) {
+            return new EmoticonsBean(in);
+        }
+
+        @Override
+        public EmoticonsBean[] newArray(int size) {
+            return new EmoticonsBean[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(parentTag);
+        parcel.writeString(parentId);
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(iconType);
+        parcel.writeByte((byte) (showName ? 1 : 0));
+        parcel.writeByte((byte) (bigEmoticon ? 1 : 0));
+        parcel.writeInt(rol);
+        parcel.writeInt(row);
+        parcel.writeByte((byte) (showDel ? 1 : 0));
+        parcel.writeTypedList(emoticonsBeanList);
     }
 }

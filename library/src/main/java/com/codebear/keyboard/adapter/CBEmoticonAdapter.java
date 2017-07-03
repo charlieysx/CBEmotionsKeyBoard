@@ -113,8 +113,8 @@ public class CBEmoticonAdapter extends BaseAdapter {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT && "gif".equals(mData.getmData().get(position)
                     .getIconType())) {
 
-                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().diskCacheStrategy
-                        (DiskCacheStrategy.SOURCE).dontAnimate().into(new SimpleTarget<Bitmap>() {
+                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().dontAnimate().into
+                        (new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         resource = eraseColor(resource, -1);
@@ -124,8 +124,8 @@ public class CBEmoticonAdapter extends BaseAdapter {
                     }
                 });
             } else {
-                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().diskCacheStrategy
-                        (DiskCacheStrategy.SOURCE).dontAnimate().into(viewHolder.ivIcon);
+                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().diskCacheStrategy(DiskCacheStrategy.SOURCE).dontAnimate().into
+                        (viewHolder.ivIcon);
             }
 
             viewHolder.rootView.setOnTouchListener(new View.OnTouchListener() {
@@ -162,7 +162,7 @@ public class CBEmoticonAdapter extends BaseAdapter {
     }
 
     //BitmapUtil中擦除Bitmap像素的方法
-    public Bitmap eraseColor(Bitmap src, int color) {
+    private Bitmap eraseColor(Bitmap src, int color) {
         int width = src.getWidth();
         int height = src.getHeight();
         Bitmap b = src.copy(Bitmap.Config.ARGB_8888, true);
@@ -190,10 +190,10 @@ public class CBEmoticonAdapter extends BaseAdapter {
                 realItemHeight));
     }
 
-    public static class ViewHolder {
-        public View rootView;
-        public LinearLayout llRoot;
-        public ImageView ivIcon;
-        public TextView tvTitle;
+    private class ViewHolder {
+        View rootView;
+        LinearLayout llRoot;
+        ImageView ivIcon;
+        TextView tvTitle;
     }
 }

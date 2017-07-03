@@ -1,23 +1,28 @@
 package com.codebear.keyboard.widget;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.codebear.keyboard.emoji.DefEmoticons;
 import com.codebear.keyboard.R;
 import com.codebear.keyboard.adapter.CBEmoticonsToolbarAdapter;
 import com.codebear.keyboard.data.EmojiBean;
 import com.codebear.keyboard.data.EmoticonsBean;
+import com.codebear.keyboard.emoji.DefEmoticons;
 import com.codebear.keyboard.fragment.CBEmoticonFragment;
 import com.codebear.keyboard.fragment.ICBFragment;
+import com.codebear.keyboard.interfaces.IEmoticonsView;
 import com.codebear.keyboard.utils.ParseDataUtils;
 
 import java.util.ArrayList;
@@ -30,7 +35,7 @@ import java.util.List;
  * Created by CodeBearon 2017/6/28.
  */
 
-public class CBEmoticonsView extends FrameLayout {
+public class CBEmoticonsView extends FrameLayout implements IEmoticonsView {
 
     public interface OnEmoticonClickListener {
         void onEmoticonClick(EmoticonsBean emoticon, boolean isDel);
@@ -51,6 +56,9 @@ public class CBEmoticonsView extends FrameLayout {
 
     private int lastPosition = 0;
     private boolean click = false;
+
+    private List<String> emoticonName = new ArrayList<>();
+    private List<String> emoticonNameBackup = new ArrayList<>();
 
     public void setOnEmoticonClickListener(OnEmoticonClickListener listener) {
         this.listener = listener;
@@ -94,7 +102,7 @@ public class CBEmoticonsView extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
-                if(!click) {
+                if (!click) {
                     if (lastPosition < position) {
                         emoticonFragments.get(position).setSeeItem(0);
                     } else if (lastPosition > position) {
@@ -157,17 +165,12 @@ public class CBEmoticonsView extends FrameLayout {
     }
 
     public void addEmoticonsWithName(String name) {
-        if ("default".equals(name)) {
-            addEmoticons(getDefaultEmoticon());
-        } else {
-            EmoticonsBean bean = ParseDataUtils.parseDataFromFile(getContext(), name);
-            if (null != bean) {
-                for (EmoticonsBean b : bean.getEmoticonsBeanList()) {
-                    b.setParentTag(name);
-                }
-                addEmoticons(bean);
-            }
-        }
+        emoticonName.add(name);
+        emoticonNameBackup.add(name);
+        EmoticonsBean bean = new EmoticonsBean();
+        bean.setRow(1);
+        bean.setRol(1);
+        addEmoticons(bean);
     }
 
     public void addEmoticonsWithName(String[] nameList) {
@@ -175,6 +178,51 @@ public class CBEmoticonsView extends FrameLayout {
             addEmoticonsWithName(name);
         }
     }
+
+    private void addEmoticonByName(String name) {
+        EmoticonsBean bean;
+        if ("default".equals(name)) {
+            bean = getDefaultEmoticon();
+        } else {
+            bean = ParseDataUtils.parseDataFromFile(getContext(), name);
+            if (null != bean) {
+                for (EmoticonsBean b : bean.getEmoticonsBeanList()) {
+                    b.setParentTag(name);
+                }
+            }
+        }
+        Message message = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("emoticon", bean);
+        bundle.putString("name", name);
+        message.setData(bundle);
+        mHandler.sendMessage(message);
+    }
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void dispatchMessage(Message msg) {
+            super.dispatchMessage(msg);
+
+            Bundle bundle = msg.getData();
+            if (bundle == null) {
+                return;
+            }
+            EmoticonsBean bean = bundle.getParcelable("emoticon");
+            String name = bundle.getString("name", "");
+            if (null != bean) {
+                for (int i = 0; i < emoticonNameBackup.size(); ++i) {
+                    if (emoticonNameBackup.get(i).equals(name)) {
+                        emoticonsToolbarAdapter.set(i, bean);
+                        emoticonsToolbarAdapter.notifyItemChanged(i);
+                        emoticonFragments.get(i).setEmoticonsBean(bean);
+                        vpEmoticonsContent.getAdapter().notifyDataSetChanged();
+                        break;
+                    }
+                }
+            }
+        }
+    };
 
     private EmoticonsBean getDefaultEmoticon() {
 
@@ -196,5 +244,31 @@ public class CBEmoticonsView extends FrameLayout {
             emoticonsBean.getEmoticonsBeanList().add(temp);
         }
         return emoticonsBean;
+    }
+
+    @Override
+    public View getView() {
+        return this;
+    }
+
+    private boolean isGetEmoticon = false;
+
+    @Override
+    public void openView() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (isGetEmoticon) {
+                    Log.i("openView", "isGetEmoticon");
+                    return;
+                }
+                isGetEmoticon = true;
+                while (emoticonName.size() > 0) {
+                    Log.i("openView", "setEmoticon : " + emoticonName.get(0));
+                    addEmoticonByName(emoticonName.get(0));
+                    emoticonName.remove(0);
+                }
+            }
+        }).start();
     }
 }
