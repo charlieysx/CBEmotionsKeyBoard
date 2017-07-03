@@ -11,13 +11,13 @@
 
 ## screen
 
-![1](/screenshot/1.jpg "1")
-![2](/screenshot/2.jpg "2")
-![3](/screenshot/3.jpg "3")
-![4](/screenshot/4.jpg "4")
-![5](/screenshot/5.jpg "5")
-![6](/screenshot/6.jpg "6")
-![7](/screenshot/7.jpg "7")
+![1](/screenshot/1.png "1")
+![2](/screenshot/2.png "2")
+![3](/screenshot/3.png "3")
+![4](/screenshot/4.png "4")
+![5](/screenshot/5.png "5")
+![6](/screenshot/6.png "6")
+![7](/screenshot/7.png "7")
 
 ## Gradle
 
