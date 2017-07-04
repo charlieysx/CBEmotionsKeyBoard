@@ -23,7 +23,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="15dp"
         app:pointHeight="8dp"
-        app:pointSpacing="4dp"
+        app:pointSpacing="10dp"
         app:pointStrokeWidth="1dp"
         app:pointWidth="8dp"
         app:selectColor="#666"
