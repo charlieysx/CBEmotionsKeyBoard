@@ -3,7 +3,6 @@ package com.codebear.keyboard;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v7.widget.AppCompatButton;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -12,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -40,12 +40,12 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     protected LayoutInflater mInflater;
 
     protected ImageView mBtnVoiceOrText;
-    protected AppCompatButton mBtnVoice;
+    protected Button mBtnVoice;
     protected EmoticonsEditText mEtChat;
     protected ImageView mBtnFace;
     protected RelativeLayout mRlInput;
     protected ImageView mBtnMultimedia;
-    protected AppCompatButton mBtnSend;
+    protected Button mBtnSend;
     protected FuncLayout funFunction;
 
     protected boolean mDispatchKeyEventPreImeLock = false;
@@ -75,12 +75,12 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
 
     protected void initView() {
         mBtnVoiceOrText = (ImageView) findViewById(R.id.iv_voice_or_text);
-        mBtnVoice = (AppCompatButton) findViewById(R.id.btn_voice);
+        mBtnVoice = (Button) findViewById(R.id.btn_voice);
         mEtChat = (EmoticonsEditText) findViewById(R.id.et_chat);
         mBtnFace = (ImageView) findViewById(R.id.iv_face);
         mRlInput = (RelativeLayout) findViewById(R.id.rl_input);
         mBtnMultimedia = (ImageView) findViewById(R.id.iv_multimedia);
-        mBtnSend = (AppCompatButton) findViewById(R.id.btn_send);
+        mBtnSend = (Button) findViewById(R.id.btn_send);
         funFunction = (FuncLayout) findViewById(R.id.fun_function);
 
         mBtnVoiceOrText.setOnClickListener(this);
@@ -142,14 +142,14 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     }
 
     public void setEmoticonFuncView(IEmoticonsView emoticonView) {
-        if(null != emoticonView && null != emoticonView.getView()) {
+        if (null != emoticonView && null != emoticonView.getView()) {
             this.iEmoticonView = emoticonView;
             funFunction.addFuncView(FUNC_TYPE_EMOTION, emoticonView.getView());
         }
     }
 
     public void setAppFuncView(View appFuncView) {
-        if(null != appFuncView) {
+        if (null != appFuncView) {
             funFunction.addFuncView(FUNC_TYPE_APPS, appFuncView);
         }
     }
@@ -157,14 +157,14 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     public void reset() {
         EmoticonsKeyboardUtils.closeSoftKeyboard(this);
         funFunction.hideAllFuncView();
-        mBtnFace.setImageResource(R.drawable.icon_face_nomal);
+        mBtnFace.setImageResource(R.drawable.btn_face_bg);
     }
 
     protected void showVoice() {
         mRlInput.setVisibility(GONE);
-        mBtnFace.setVisibility(GONE);
         mBtnVoice.setVisibility(VISIBLE);
-        mBtnSend.setClickable(false);
+        mBtnSend.setVisibility(GONE);
+        mBtnMultimedia.setVisibility(VISIBLE);
         reset();
     }
 
@@ -180,7 +180,10 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         mRlInput.setVisibility(VISIBLE);
         mBtnFace.setVisibility(VISIBLE);
         mBtnVoice.setVisibility(GONE);
-        mBtnSend.setClickable(true);
+        if (!TextUtils.isEmpty(mEtChat.getText().toString())) {
+            mBtnSend.setVisibility(VISIBLE);
+            mBtnMultimedia.setVisibility(GONE);
+        }
     }
 
     protected void toggleFuncView(int key) {
@@ -191,10 +194,10 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     @Override
     public void onFuncChange(int key) {
         if (FUNC_TYPE_EMOTION == key) {
-            mBtnFace.setImageResource(R.drawable.icon_softkeyboard_nomal);
+            mBtnFace.setImageResource(R.drawable.btn_voice_or_text_keyboard);
             this.iEmoticonView.openView();
         } else {
-            mBtnFace.setImageResource(R.drawable.icon_face_nomal);
+            mBtnFace.setImageResource(R.drawable.btn_face_bg);
         }
         checkVoice();
     }
@@ -216,6 +219,11 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         funFunction.setVisibility(true);
         onFuncChange(funFunction.DEF_KEY);
         clickFunc = 0;
+        if (mEtChat.hasFocus()) {
+            mRlInput.setBackgroundResource(R.drawable.input_bg_green);
+        } else {
+            mRlInput.setBackgroundResource(R.drawable.input_bg_gray);
+        }
     }
 
     @Override
@@ -225,6 +233,11 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
             reset();
         } else {
             onFuncChange(funFunction.getCurrentFuncKey());
+        }
+        if (mEtChat.hasFocus()) {
+            mRlInput.setBackgroundResource(R.drawable.input_bg_green);
+        } else {
+            mRlInput.setBackgroundResource(R.drawable.input_bg_gray);
         }
     }
 
@@ -246,8 +259,6 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
                 EmoticonsKeyboardUtils.openSoftKeyboard(mEtChat);
             }
         } else if (i == R.id.iv_face) {
-            EmoticonsKeyboardUtils.openSoftKeyboard(mEtChat);
-            EmoticonsKeyboardUtils.closeSoftKeyboard(mEtChat);
             clickFunc = FUNC_TYPE_EMOTION;
             toggleFuncView(FUNC_TYPE_EMOTION);
         } else if (i == R.id.iv_multimedia) {
@@ -328,11 +339,11 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         return mEtChat;
     }
 
-    public AppCompatButton getBtnVoice() {
+    public Button getBtnVoice() {
         return mBtnVoice;
     }
 
-    public AppCompatButton getBtnSend() {
+    public Button getBtnSend() {
         return mBtnSend;
     }
 
