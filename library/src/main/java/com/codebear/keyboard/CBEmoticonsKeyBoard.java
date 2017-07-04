@@ -21,6 +21,7 @@ import com.codebear.keyboard.utils.EmoticonsKeyboardUtils;
 import com.codebear.keyboard.widget.AutoHeightLayout;
 import com.codebear.keyboard.widget.EmoticonsEditText;
 import com.codebear.keyboard.widget.FuncLayout;
+import com.codebear.keyboard.widget.RecordIndicator;
 
 /**
  * description:
@@ -56,6 +57,9 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
      */
     private int clickFunc = 0;
 
+    private RecordIndicator recordIndicator;
+    private boolean initRecordIndicator = false;
+
     public CBEmoticonsKeyBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -87,13 +91,17 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         mBtnMultimedia.setOnClickListener(this);
         mEtChat.setOnBackKeyClickListener(this);
         funFunction.setOnFuncChangeListener(this);
+
+        if (recordIndicator != null && !initRecordIndicator) {
+            initRecordIndicator = true;
+            recordIndicator.setRecordButton(mBtnVoice);
+        }
     }
 
     protected void initFuncView() {
         initEmoticonFuncView();
         initAppFuncView();
         initEditView();
-        listenerVoiceBtn();
     }
 
     protected void initEmoticonFuncView() {
@@ -333,10 +341,6 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         return mEtChat;
     }
 
-    public Button getBtnVoice() {
-        return mBtnVoice;
-    }
-
     public Button getBtnSend() {
         return mBtnSend;
     }
@@ -348,93 +352,10 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         mEtChat.onKeyDown(KeyEvent.KEYCODE_DEL, event);
     }
 
-    private boolean cancel_record = false;
-    private boolean start_record = false;
-
-    private void listenerVoiceBtn() {
-        mBtnVoice.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (onRecordListener != null) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            cancel_record = false;
-                            start_record = true;
-                            mBtnVoice.setText("松开结束");
-                            onRecordListener.recordStart();
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            if (start_record) {
-                                float x = event.getX();
-                                float y = event.getY();
-                                boolean cancelY;
-                                boolean cancelX;
-                                if (y < 0) {
-                                    cancelY = (-y > mBtnVoice.getHeight() * 4.5);
-                                } else {
-                                    cancelY = (y > mBtnVoice.getHeight() * 1.5);
-                                }
-                                cancelX = (x < 0 || x > mBtnVoice.getWidth());
-
-                                cancel_record = cancelX || cancelY;
-
-                                if (cancel_record) {
-                                    mBtnVoice.setText("松开手指，结束录音");
-                                } else {
-                                    mBtnVoice.setText("松开结束");
-                                }
-
-                                return true;
-                            }
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            start_record = false;
-                            mBtnVoice.setText("按住录音");
-                            if (cancel_record) {
-                                onRecordListener.recordCancel();
-                            } else {
-                                onRecordListener.recordFinish();
-                            }
-                            break;
-                    }
-                }
-                return false;
-            }
-        });
-    }
-
-    private OnRecordListener onRecordListener;
-
-    public void setOnRecordListener(OnRecordListener onRecordListener) {
-        this.onRecordListener = onRecordListener;
-    }
-
-    /**
-     * 设置录音分贝(用于显示动画)
-     *
-     * @param decibel 分贝
-     */
-    public void setRecordDecibel(int decibel) {
-
-    }
-
-    /**
-     * 录音接口
-     */
-    public interface OnRecordListener {
-        /**
-         * 开始录音
-         */
-        void recordStart();
-
-        /**
-         * 结束录音
-         */
-        void recordFinish();
-
-        /**
-         * 取消录音
-         */
-        void recordCancel();
+    public void setRecordIndicator(RecordIndicator recordIndicator) {
+        this.recordIndicator = recordIndicator;
+        if(mBtnVoice != null && !initRecordIndicator) {
+            recordIndicator.setRecordButton(mBtnVoice);
+        }
     }
 }

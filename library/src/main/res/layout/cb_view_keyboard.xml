@@ -11,6 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="bottom"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
         android:paddingTop="8dp">
@@ -20,6 +21,7 @@
             android:id="@+id/iv_voice_or_text"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_alignBottom="@+id/rl_input"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:src="@drawable/btn_voice_or_text"/>
@@ -30,7 +32,7 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:layout_alignBottom="@+id/iv_voice_or_text"
+            android:layout_alignBottom="@+id/rl_input"
             android:layout_marginEnd="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -50,7 +52,6 @@
             android:id="@+id/rl_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/iv_voice_or_text"
             android:layout_marginEnd="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -60,23 +61,23 @@
             android:layout_toRightOf="@+id/iv_voice_or_text"
             android:layout_toStartOf="@+id/iv_face"
             android:background="@drawable/input_bg_gray"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp">
+            android:gravity="bottom"
+            android:minHeight="32dp"
+            android:orientation="horizontal">
 
             <!--输入框-->
             <com.codebear.keyboard.widget.EmoticonsEditText
                 android:id="@+id/et_chat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:background="@null"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:lineSpacingExtra="4dp"
                 android:maxLines="3"
-                android:paddingEnd="0dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="0dp"
-                android:paddingStart="5dp"
+                android:paddingBottom="5dp"
                 android:textSize="16sp"/>
 
         </RelativeLayout>
@@ -86,7 +87,7 @@
             android:id="@+id/iv_face"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignBottom="@+id/iv_voice_or_text"
+            android:layout_alignBottom="@+id/rl_input"
             android:layout_marginEnd="2dp"
             android:layout_marginRight="2dp"
             android:layout_toLeftOf="@+id/rl_multi_and_send"
@@ -97,7 +98,7 @@
             android:id="@+id/rl_multi_and_send"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/iv_voice_or_text"
+            android:layout_alignBottom="@+id/rl_input"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:focusableInTouchMode="true"
@@ -117,9 +118,9 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="50dp"
                 android:layout_height="32dp"
+                android:layout_centerInParent="true"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_centerInParent="true"
                 android:background="@color/black"
                 android:text="@string/btn_text_send"
                 android:textColor="@color/btn_send_textcolor"

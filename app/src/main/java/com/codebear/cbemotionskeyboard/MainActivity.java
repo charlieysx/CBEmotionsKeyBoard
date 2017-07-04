@@ -17,14 +17,17 @@ import com.codebear.keyboard.data.EmoticonsBean;
 import com.codebear.keyboard.widget.CBAppFuncView;
 import com.codebear.keyboard.widget.CBEmoticonsView;
 import com.codebear.keyboard.widget.FuncLayout;
+import com.codebear.keyboard.widget.RecordIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
     private CBEmoticonsKeyBoard cbEmoticonsKeyBoard;
     private RecyclerView rcvContent;
+    private RecordIndicator recordIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         initRecycleView();
         initKeyBoard();
+        initRecordButton();
         initEmoticonsView();
         initAppFuncView();
     }
@@ -67,31 +71,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        cbEmoticonsKeyBoard.setOnRecordListener(new CBEmoticonsKeyBoard.OnRecordListener() {
-            @Override
-            public void recordStart() {
-                Log.i("record", "---start---");
-            }
-
-            @Override
-            public void recordFinish() {
-                Log.i("record", "---finish---");
-            }
-
-            @Override
-            public void recordCancel() {
-                Log.i("record", "---cancel---");
-            }
-        });
-
         cbEmoticonsKeyBoard.getBtnSend().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(MainActivity.this, cbEmoticonsKeyBoard.getEtChat().getText().toString(), Toast
+                        .LENGTH_SHORT).show();
                 cbEmoticonsKeyBoard.getEtChat().setText("");
             }
         });
 
         cbEmoticonsKeyBoard.getBtnSend().setBackgroundResource(R.drawable.btn_send);
+    }
+
+    private void initRecordButton() {
+        recordIndicator = new RecordIndicator(this);
+        cbEmoticonsKeyBoard.setRecordIndicator(recordIndicator);
+        recordIndicator.setOnRecordListener(new RecordIndicator.OnRecordListener() {
+            @Override
+            public void recordStart() {
+                startRecord();
+            }
+
+            @Override
+            public void recordFinish() {
+                finishRecord();
+            }
+
+            @Override
+            public void recordCancel() {
+                cancelRecord();
+            }
+        });
     }
 
     private void initEmoticonsView() {
@@ -149,5 +159,40 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("onAppFunClick", text);
             }
         });
+    }
+
+    private boolean recording = false;
+
+    private void startRecord() {
+        recording = true;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (recording) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            int rank = new Random().nextInt(7);
+                            recordIndicator.setRecordDecibel(rank);
+                        }
+                    });
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    private void finishRecord() {
+        recording = false;
+        Toast.makeText(this, "发送录音", Toast.LENGTH_SHORT).show();
+    }
+
+    private void cancelRecord() {
+        recording = false;
+        Toast.makeText(this, "取消录音", Toast.LENGTH_SHORT).show();
     }
 }
