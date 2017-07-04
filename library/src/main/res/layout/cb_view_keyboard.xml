@@ -18,18 +18,18 @@
         <!-- 语音/文字切换-->
         <ImageView
             android:id="@+id/iv_voice_or_text"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_alignBottom="@+id/rl_input"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:src="@drawable/btn_voice_or_text"/>
 
         <!--语音输入-->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_voice"
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="32dp"
             android:layout_alignBottom="@+id/rl_input"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
@@ -57,8 +57,7 @@
             android:layout_toStartOf="@+id/iv_face"
             android:background="@drawable/input_bg_gray"
             android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+            android:paddingBottom="5dp">
 
             <!--输入框-->
             <com.codebear.keyboard.widget.EmoticonsEditText
@@ -88,7 +87,7 @@
 
         <RelativeLayout
             android:id="@+id/rl_multi_and_send"
-            android:layout_width="58dp"
+            android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/rl_input"
             android:layout_alignParentEnd="true"
@@ -99,8 +98,8 @@
             <!--apps 功能-->
             <ImageView
                 android:id="@+id/iv_multimedia"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/btn_multi_bg"/>
 
@@ -108,7 +107,7 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_send"
                 android:layout_width="50dp"
-                android:layout_height="30dp"
+                android:layout_height="34dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/btn_send_bg_disable"
                 android:gravity="center"

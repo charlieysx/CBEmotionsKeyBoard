@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 cbEmoticonsKeyBoard.getEtChat().setText("");
             }
         });
+
+        cbEmoticonsKeyBoard.getBtnSend().setBackgroundResource(R.drawable.btn_send);
     }
 
     private void initEmoticonsView() {

@@ -132,7 +132,6 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
                 if (!TextUtils.isEmpty(s)) {
                     mBtnSend.setVisibility(VISIBLE);
                     mBtnMultimedia.setVisibility(GONE);
-                    mBtnSend.setBackgroundResource(R.drawable.btn_send_bg);
                 } else {
                     mBtnMultimedia.setVisibility(VISIBLE);
                     mBtnSend.setVisibility(GONE);
@@ -165,6 +164,7 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         mRlInput.setVisibility(GONE);
         mBtnFace.setVisibility(GONE);
         mBtnVoice.setVisibility(VISIBLE);
+        mBtnSend.setClickable(false);
         reset();
     }
 
@@ -180,6 +180,7 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         mRlInput.setVisibility(VISIBLE);
         mBtnFace.setVisibility(VISIBLE);
         mBtnVoice.setVisibility(GONE);
+        mBtnSend.setClickable(true);
     }
 
     protected void toggleFuncView(int key) {

@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -141,6 +140,7 @@ public class CBEmoticonsView extends FrameLayout implements IEmoticonsView {
 
     public void addEmoticons(EmoticonsBean bean) {
         emoticonsToolbarAdapter.add(bean);
+        emoticonsBeanList.add(bean);
         emoticonsToolbarAdapter.notifyItemInserted(emoticonsBeanList.size());
 
         ICBFragment fragment = CBEmoticonFragment.newInstance();
@@ -153,6 +153,7 @@ public class CBEmoticonsView extends FrameLayout implements IEmoticonsView {
 
     public void addEmoticons(List<EmoticonsBean> beanList) {
         emoticonsToolbarAdapter.addAll(beanList);
+        emoticonsBeanList.addAll(beanList);
         emoticonsToolbarAdapter.notifyItemRangeInserted(emoticonsBeanList.size() - beanList.size(), beanList.size());
 
         for (EmoticonsBean bean : beanList) {
@@ -259,12 +260,10 @@ public class CBEmoticonsView extends FrameLayout implements IEmoticonsView {
             @Override
             public void run() {
                 if (isGetEmoticon) {
-                    Log.i("openView", "isGetEmoticon");
                     return;
                 }
                 isGetEmoticon = true;
                 while (emoticonName.size() > 0) {
-                    Log.i("openView", "setEmoticon : " + emoticonName.get(0));
                     addEmoticonByName(emoticonName.get(0));
                     emoticonName.remove(0);
                 }
