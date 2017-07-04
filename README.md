@@ -33,7 +33,7 @@ allprojects {
 * 加上以下依赖
 ```xml
 dependencies {
-    compile 'com.codebear.keyboard:emoticons-keyboard:1.0.2'
+    compile 'com.codebear.keyboard:emoticons-keyboard:1.0.3'
 }
 ```
 * 库中需要解压表情包，需要用到存储权限，所以在项目的AndroidManifest.xml中还需要加入以下权限(6.0以上需要申请)
@@ -306,3 +306,8 @@ private void initAppFuncView() {
     });
  ```
  相对表情包显示，CBAppFuncView使用比较简单，只需要初始化并传入AppFuncBean列表即可，AppFuncBean有两个变量，分别是显示的图标跟名称
+
+ 3. 使用以下方法更改发送按钮的背景
+       ```java
+        cbEmoticonsKeyBoard.getBtnSend().setBackgroundResource(R.drawable.btn_send);
+       ```
