@@ -67,10 +67,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        cbEmoticonsKeyBoard.getBtnVoice().setOnTouchListener(new View.OnTouchListener() {
+        cbEmoticonsKeyBoard.setOnRecordListener(new CBEmoticonsKeyBoard.OnRecordListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return false;
+            public void recordStart() {
+                Log.i("record", "---start---");
+            }
+
+            @Override
+            public void recordFinish() {
+                Log.i("record", "---finish---");
+            }
+
+            @Override
+            public void recordCancel() {
+                Log.i("record", "---cancel---");
             }
         });
 

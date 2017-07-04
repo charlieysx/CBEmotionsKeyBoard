@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.codebear.keyboard.emoji.DefaultEmojiFilter;
@@ -94,6 +93,7 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         initEmoticonFuncView();
         initAppFuncView();
         initEditView();
+        listenerVoiceBtn();
     }
 
     protected void initEmoticonFuncView() {
@@ -200,12 +200,6 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
             mBtnFace.setImageResource(R.drawable.btn_face_bg);
         }
         checkVoice();
-    }
-
-    protected void setFuncViewHeight(int height) {
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) funFunction.getLayoutParams();
-        params.height = height;
-        funFunction.setLayoutParams(params);
     }
 
     @Override
@@ -347,11 +341,100 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         return mBtnSend;
     }
 
-
     public void delClick() {
         int action = KeyEvent.ACTION_DOWN;
         int code = KeyEvent.KEYCODE_DEL;
         KeyEvent event = new KeyEvent(action, code);
         mEtChat.onKeyDown(KeyEvent.KEYCODE_DEL, event);
+    }
+
+    private boolean cancel_record = false;
+    private boolean start_record = false;
+
+    private void listenerVoiceBtn() {
+        mBtnVoice.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (onRecordListener != null) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            cancel_record = false;
+                            start_record = true;
+                            mBtnVoice.setText("松开结束");
+                            onRecordListener.recordStart();
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            if (start_record) {
+                                float x = event.getX();
+                                float y = event.getY();
+                                boolean cancelY;
+                                boolean cancelX;
+                                if (y < 0) {
+                                    cancelY = (-y > mBtnVoice.getHeight() * 4.5);
+                                } else {
+                                    cancelY = (y > mBtnVoice.getHeight() * 1.5);
+                                }
+                                cancelX = (x < 0 || x > mBtnVoice.getWidth());
+
+                                cancel_record = cancelX || cancelY;
+
+                                if (cancel_record) {
+                                    mBtnVoice.setText("松开手指，结束录音");
+                                } else {
+                                    mBtnVoice.setText("松开结束");
+                                }
+
+                                return true;
+                            }
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            start_record = false;
+                            mBtnVoice.setText("按住录音");
+                            if (cancel_record) {
+                                onRecordListener.recordCancel();
+                            } else {
+                                onRecordListener.recordFinish();
+                            }
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private OnRecordListener onRecordListener;
+
+    public void setOnRecordListener(OnRecordListener onRecordListener) {
+        this.onRecordListener = onRecordListener;
+    }
+
+    /**
+     * 设置录音分贝(用于显示动画)
+     *
+     * @param decibel 分贝
+     */
+    public void setRecordDecibel(int decibel) {
+
+    }
+
+    /**
+     * 录音接口
+     */
+    public interface OnRecordListener {
+        /**
+         * 开始录音
+         */
+        void recordStart();
+
+        /**
+         * 结束录音
+         */
+        void recordFinish();
+
+        /**
+         * 取消录音
+         */
+        void recordCancel();
     }
 }
