@@ -102,13 +102,6 @@ private void initKeyBoard() {
         }
     });
 
-    cbEmoticonsKeyBoard.getBtnVoice().setOnTouchListener(new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            return false;
-        }
-    });
-
     cbEmoticonsKeyBoard.getBtnSend().setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
