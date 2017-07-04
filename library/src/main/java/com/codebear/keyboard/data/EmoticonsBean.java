@@ -39,7 +39,7 @@ public class EmoticonsBean implements Parcelable {
     public EmoticonsBean(boolean isDel) {
         if(isDel) {
             id = DEL;
-            iconUri = R.mipmap.icon_del;
+            iconUri = R.mipmap.ic_del;
         }
     }
 
