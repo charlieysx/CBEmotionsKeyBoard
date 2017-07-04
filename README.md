@@ -307,7 +307,7 @@ private void initAppFuncView() {
  ```
  相对表情包显示，CBAppFuncView使用比较简单，只需要初始化并传入AppFuncBean列表即可，AppFuncBean有两个变量，分别是显示的图标跟名称
 
- 3. 使用以下方法更改发送按钮的背景
+ * 该库提供了默认的表情包view:CBEmoticonsView和默认的app功能的view:CBAppFuncView
        ```java
         cbEmoticonsKeyBoard.getBtnSend().setBackgroundResource(R.drawable.btn_send);
        ```
