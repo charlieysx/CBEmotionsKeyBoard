@@ -99,10 +99,9 @@ public abstract class AutoHeightLayout extends SoftKeyboardSizeWatchLayout imple
     }
 
     @Override
-    public void OnSoftPop(final int height) {
+    public void OnSoftPop(int height) {
         if (mSoftKeyboardHeight != height) {
             mSoftKeyboardHeight = height;
-            EmoticonsKeyboardUtils.setDefKeyboardHeight(mContext, mSoftKeyboardHeight);
             onSoftKeyboardHeightChanged(mSoftKeyboardHeight);
         }
     }

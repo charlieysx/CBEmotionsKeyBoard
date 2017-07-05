@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 
+import com.codebear.keyboard.utils.EmoticonsKeyboardUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,7 @@ public class SoftKeyboardSizeWatchLayout extends RelativeLayout {
                 if (mOldh != -1 && mNowh != mOldh) {
                     if (mNowh > 0) {
                         mIsSoftKeyboardPop = true;
+                        EmoticonsKeyboardUtils.setDefKeyboardHeight(mContext, mNowh);
                         if (mListenerList != null) {
                             for (OnResizeListener l : mListenerList) {
                                 l.OnSoftPop(mNowh);
@@ -76,6 +79,7 @@ public class SoftKeyboardSizeWatchLayout extends RelativeLayout {
     public interface OnResizeListener {
         /**
          * 软键盘弹起
+         *
          * @param height
          */
         void OnSoftPop(int height);
