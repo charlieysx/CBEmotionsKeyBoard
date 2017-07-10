@@ -63,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
         cbEmoticonsKeyBoard.addOnFuncKeyBoardListener(new FuncLayout.OnFuncKeyBoardListener() {
             @Override
-            public void OnFuncPop(int height) {
+            public void onFuncPop(int height) {
 
             }
 
             @Override
-            public void OnFuncClose() {
+            public void onFuncClose() {
 
             }
         });

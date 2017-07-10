@@ -123,14 +123,14 @@ public class FuncLayout extends LinearLayout {
             params.height = mHeight;
             if (mListenerList != null) {
                 for (OnFuncKeyBoardListener l : mListenerList) {
-                    l.OnFuncPop(mHeight);
+                    l.onFuncPop(mHeight + navHeight);
                 }
             }
         } else {
             params.height = 0;
             if (mListenerList != null) {
                 for (OnFuncKeyBoardListener l : mListenerList) {
-                    l.OnFuncClose();
+                    l.onFuncClose();
                 }
             }
         }
@@ -154,13 +154,15 @@ public class FuncLayout extends LinearLayout {
     public interface OnFuncKeyBoardListener {
         /**
          * 功能布局弹起
+         *
+         * @param height 弹起的高度(包括底部导航栏高度)
          */
-        void OnFuncPop(int height);
+        void onFuncPop(int height);
 
         /**
          * 功能布局关闭
          */
-        void OnFuncClose();
+        void onFuncClose();
     }
 
     private OnFuncChangeListener onFuncChangeListener;
