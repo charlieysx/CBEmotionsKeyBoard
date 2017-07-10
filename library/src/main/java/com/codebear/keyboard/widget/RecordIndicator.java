@@ -37,7 +37,6 @@ public class RecordIndicator {
      * 最短录音时长为1s
      */
     private int minRecordTime = 1000;
-    private long startTime;
     private Button recordButton;
 
     public RecordIndicator(Context mContext) {
@@ -58,6 +57,7 @@ public class RecordIndicator {
     private void show() {
         if (recordDialog != null && !recordDialog.isShowing()) {
             recordDialog.show();
+
         }
     }
 
@@ -133,10 +133,10 @@ public class RecordIndicator {
                         case MotionEvent.ACTION_UP:
                             start_record = false;
                             recordButton.setText("按住录音");
-                            long intervalTime = System.currentTimeMillis() - startTime;
+                            long intervalTime = onRecordListener.getRecordTime();
                             if (cancel_record) {
                                 cancelRecord(true);
-                            } else if(intervalTime < minRecordTime) {
+                            } else if (intervalTime < minRecordTime) {
                                 recordTooShort();
                             } else {
                                 finishRecord();
@@ -149,28 +149,39 @@ public class RecordIndicator {
         });
     }
 
+    private DecibelThread decibelThread;
+
     private void startRecord(boolean realStart) {
         showView(RecordIndicator.RecordView.START_VIEW);
-        if(realStart) {
+        if (realStart) {
             cancel_record = false;
             start_record = true;
             recordButton.setBackgroundResource(R.drawable.btn_voice_press);
             recordButton.setText("松开结束");
-            startTime = System.currentTimeMillis();
             onRecordListener.recordStart();
             show();
+            decibelThread = new DecibelThread();
+            decibelThread.start();
         }
     }
 
     private void cancelRecord(boolean dismiss) {
+        if (decibelThread != null) {
+            decibelThread.exit();
+            decibelThread = null;
+        }
         showView(RecordIndicator.RecordView.CANCEL_VIEW);
-        if(dismiss) {
+        if (dismiss) {
             onRecordListener.recordCancel();
             dismissRecordIndicator(600);
         }
     }
 
     private void finishRecord() {
+        if (decibelThread != null) {
+            decibelThread.exit();
+            decibelThread = null;
+        }
         onRecordListener.recordFinish();
         dismissRecordIndicator(200);
     }
@@ -216,6 +227,48 @@ public class RecordIndicator {
          * 取消录音
          */
         void recordCancel();
+
+        /**
+         * 获取录音时长
+         *
+         * @return
+         */
+        long getRecordTime();
+
+        /**
+         * 获取分贝等级
+         *
+         * @return
+         */
+        int getRecordDecibel();
     }
 
+    private class DecibelThread extends Thread {
+        private volatile boolean running = true;
+
+        public void exit() {
+            running = false;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            while (running) {
+                if (onRecordListener == null || !running) {
+                    break;
+                }
+                viewFlipper.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setRecordDecibel(onRecordListener.getRecordDecibel());
+                    }
+                });
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

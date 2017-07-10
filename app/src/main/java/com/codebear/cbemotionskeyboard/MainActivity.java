@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.codebear.keyboard.CBEmoticonsKeyBoard;
 import com.codebear.keyboard.data.AppFuncBean;
 import com.codebear.keyboard.data.EmoticonsBean;
+import com.codebear.keyboard.utils.RecordUtil;
 import com.codebear.keyboard.widget.CBAppFuncView;
 import com.codebear.keyboard.widget.CBEmoticonsView;
 import com.codebear.keyboard.widget.FuncLayout;
@@ -21,13 +22,14 @@ import com.codebear.keyboard.widget.RecordIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
     private CBEmoticonsKeyBoard cbEmoticonsKeyBoard;
     private RecyclerView rcvContent;
     private RecordIndicator recordIndicator;
+
+    private RecordUtil recordUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,22 @@ public class MainActivity extends AppCompatActivity {
             public void recordCancel() {
                 cancelRecord();
             }
+
+            @Override
+            public long getRecordTime() {
+                if(null == recordUtil) {
+                    return 0;
+                }
+                return recordUtil.getVoiceDuration() * 1000;
+            }
+
+            @Override
+            public int getRecordDecibel() {
+                if(null == recordUtil) {
+                    return 0;
+                }
+                return recordUtil.getRecordDecibel();
+            }
         });
     }
 
@@ -161,38 +179,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean recording = false;
-
     private void startRecord() {
-        recording = true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (recording) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            int rank = new Random().nextInt(7);
-                            recordIndicator.setRecordDecibel(rank);
-                        }
-                    });
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
+        if (null == recordUtil) {
+            recordUtil = new RecordUtil(this);
+        }
+        recordUtil.start();
     }
 
     private void finishRecord() {
-        recording = false;
-        Toast.makeText(this, "发送录音", Toast.LENGTH_SHORT).show();
+        recordUtil.finish();
+        Toast.makeText(this, "发送了" + recordUtil.getVoiceDuration() + "s的录音", Toast.LENGTH_SHORT).show();
     }
 
     private void cancelRecord() {
-        recording = false;
+        recordUtil.cancel();
         Toast.makeText(this, "取消录音", Toast.LENGTH_SHORT).show();
     }
 }
