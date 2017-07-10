@@ -106,4 +106,7 @@ public class RecordUtil {
         return mediaPlayer.getDuration() / 1000;
     }
 
+    public String getFileName() {
+        return outPutFileName;
+    }
 }
