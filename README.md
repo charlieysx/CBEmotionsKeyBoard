@@ -37,7 +37,7 @@ allprojects {
 * 加上以下依赖
 ```xml
 dependencies {
-    compile 'com.codebear.keyboard:emoticons-keyboard:1.0.5'
+    compile 'com.codebear.keyboard:emoticons-keyboard:1.0.6'
 }
 ```
 * 库中需要解压表情包，需要用到存储权限，所以在项目的AndroidManifest.xml中还需要加入以下权限(6.0以上需要申请)
