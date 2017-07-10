@@ -124,8 +124,8 @@ public class CBEmoticonAdapter extends BaseAdapter {
                     }
                 });
             } else {
-                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().diskCacheStrategy(DiskCacheStrategy.SOURCE).dontAnimate().into
-                        (viewHolder.ivIcon);
+                Glide.with(mContext).load(mData.getmData().get(position).getIconUri()).asBitmap().diskCacheStrategy
+                        (DiskCacheStrategy.SOURCE).dontAnimate().into(viewHolder.ivIcon);
             }
 
             viewHolder.rootView.setOnTouchListener(new View.OnTouchListener() {
