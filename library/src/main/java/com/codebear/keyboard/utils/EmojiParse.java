@@ -19,6 +19,7 @@ public class EmojiParse {
     }
 
     public static final String newString(int codePoint) {
-        return Character.charCount(codePoint) == 1?String.valueOf(codePoint):new String(Character.toChars(codePoint));
+        return Character.charCount(codePoint) == 1 ? String.valueOf(codePoint) : new String(Character.toChars
+                (codePoint));
     }
 }

@@ -1,8 +1,10 @@
 package com.codebear.keyboard.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -23,7 +25,7 @@ import android.widget.TextView;
 
 public class EmoticonsKeyboardUtils {
     private static final String EXTRA_DEF_KEYBOARDHEIGHT = "DEF_KEYBOARDHEIGHT";
-    private static final int DEF_KEYBOARD_HEAGH_WITH_DP = 300;
+    private static final int DEF_KEYBOARD_HEAGH_WITH_DP = 240;
     private static int sDefKeyboardHeight = -1;
 
     private static DisplayMetrics getDisplayMetrics(Context context) {
@@ -125,5 +127,28 @@ public class EmoticonsKeyboardUtils {
         }
         InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    /**
+     * 得到虚拟按键的高度
+     *
+     * @return 虚拟按键的高度
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static int getNavigationBarHeight(
+            Context context) {
+
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
+        // 获取可用的高度
+        DisplayMetrics defaultDisplayMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(defaultDisplayMetrics);
+        int usableHeight = defaultDisplayMetrics.heightPixels;
+
+        // 获取实际的高度
+        DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getRealMetrics(realDisplayMetrics);
+        int realHeight = realDisplayMetrics.heightPixels;
+
+        return realHeight > usableHeight ? realHeight - usableHeight : 0;
     }
 }

@@ -20,7 +20,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0.4"
+        versionName "1.0.5"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -49,7 +49,7 @@ publish {
     userOrg = 'codebearxx' // 用户所在组织
     groupId = 'com.codebear.keyboard' // 包名
     artifactId = 'emoticons-keyboard' // library的名字
-    publishVersion = '1.0.4' // 版本
+    publishVersion = '1.0.5' // 版本
     desc = 'A Emoticons KeyBoard' // library描述
     website = 'https://github.com/smileysx/CBEmotionsKeyBoard'
 }

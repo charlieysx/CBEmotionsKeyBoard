@@ -27,6 +27,7 @@ public class SoftKeyboardSizeWatchLayout extends RelativeLayout {
     private int mNowh = -1;
     protected int mScreenHeight = 0;
     protected boolean mIsSoftKeyboardPop = false;
+    protected boolean mIsNavBarPop = false;
 
     public SoftKeyboardSizeWatchLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -42,18 +43,35 @@ public class SoftKeyboardSizeWatchLayout extends RelativeLayout {
                 mNowh = mScreenHeight - r.bottom;
                 if (mOldh != -1 && mNowh != mOldh) {
                     if (mNowh > 0) {
-                        mIsSoftKeyboardPop = true;
-                        EmoticonsKeyboardUtils.setDefKeyboardHeight(mContext, mNowh);
+                        int navHeight = EmoticonsKeyboardUtils.getNavigationBarHeight(mContext);
+                        boolean isNav = false;
+                        if (navHeight == mNowh) {
+                            isNav = true;
+                            mIsNavBarPop = true;
+                        } else {
+                            mIsSoftKeyboardPop = true;
+                            mNowh -= navHeight;
+                        }
+                        if (!isNav) {
+                            EmoticonsKeyboardUtils.setDefKeyboardHeight(mContext, mNowh);
+                        }
                         if (mListenerList != null) {
                             for (OnResizeListener l : mListenerList) {
-                                l.OnSoftPop(mNowh);
+                                if (isNav) {
+                                    l.onNavBarPop(mNowh);
+                                } else {
+                                    l.onSoftPop(mNowh);
+                                    l.onNavBarPop(navHeight);
+                                }
                             }
                         }
                     } else {
                         mIsSoftKeyboardPop = false;
+                        mIsNavBarPop = false;
                         if (mListenerList != null) {
                             for (OnResizeListener l : mListenerList) {
-                                l.OnSoftClose();
+                                l.onSoftClose();
+                                l.onNavBarClose();
                             }
                         }
                     }
@@ -80,13 +98,25 @@ public class SoftKeyboardSizeWatchLayout extends RelativeLayout {
         /**
          * 软键盘弹起
          *
-         * @param height
+         * @param height 键盘高度
          */
-        void OnSoftPop(int height);
+        void onSoftPop(int height);
 
         /**
          * 软键盘关闭
          */
-        void OnSoftClose();
+        void onSoftClose();
+
+        /**
+         * 底部导航栏打开
+         *
+         * @param height 底部虚拟按键高度
+         */
+        void onNavBarPop(int height);
+
+        /**
+         * 底部导航栏关闭
+         */
+        void onNavBarClose();
     }
 }

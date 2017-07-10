@@ -216,8 +216,8 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     }
 
     @Override
-    public void OnSoftPop(int height) {
-        super.OnSoftPop(height);
+    public void onSoftPop(int height) {
+        super.onSoftPop(height);
         funFunction.setVisibility(true);
         onFuncChange(funFunction.DEF_KEY);
         clickFunc = 0;
@@ -229,8 +229,8 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     }
 
     @Override
-    public void OnSoftClose() {
-        super.OnSoftClose();
+    public void onSoftClose() {
+        super.onSoftClose();
         if (clickFunc == 0) {
             reset();
         } else {
@@ -241,6 +241,18 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         } else {
             mRlInput.setBackgroundResource(R.drawable.input_bg_gray);
         }
+    }
+
+    @Override
+    public void onNavBarPop(int height) {
+        super.onNavBarPop(height);
+        funFunction.updateNavHeight(height);
+    }
+
+    @Override
+    public void onNavBarClose() {
+        super.onNavBarClose();
+        funFunction.updateNavHeight(0);
     }
 
     public void addOnFuncKeyBoardListener(FuncLayout.OnFuncKeyBoardListener l) {

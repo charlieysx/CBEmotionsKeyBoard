@@ -99,7 +99,7 @@ public abstract class AutoHeightLayout extends SoftKeyboardSizeWatchLayout imple
     }
 
     @Override
-    public void OnSoftPop(int height) {
+    public void onSoftPop(int height) {
         if (mSoftKeyboardHeight != height) {
             mSoftKeyboardHeight = height;
             onSoftKeyboardHeightChanged(mSoftKeyboardHeight);
@@ -107,7 +107,17 @@ public abstract class AutoHeightLayout extends SoftKeyboardSizeWatchLayout imple
     }
 
     @Override
-    public void OnSoftClose() {
+    public void onSoftClose() {
+    }
+
+    @Override
+    public void onNavBarPop(int height) {
+
+    }
+
+    @Override
+    public void onNavBarClose() {
+
     }
 
     public abstract void onSoftKeyboardHeightChanged(int height);

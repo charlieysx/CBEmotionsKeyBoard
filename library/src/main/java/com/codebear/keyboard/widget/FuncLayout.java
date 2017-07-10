@@ -31,6 +31,7 @@ public class FuncLayout extends LinearLayout {
     private int mCurrentFuncKey = DEF_KEY;
 
     protected int mHeight = 0;
+    protected int navHeight = 0;
 
     public FuncLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -49,12 +50,12 @@ public class FuncLayout extends LinearLayout {
     }
 
     public void hideAllFuncView() {
+        mCurrentFuncKey = DEF_KEY;
+        setVisibility(false);
         for (int i = 0; i < mFuncViewArrayMap.size(); i++) {
             int keyTemp = mFuncViewArrayMap.keyAt(i);
             mFuncViewArrayMap.get(keyTemp).setVisibility(GONE);
         }
-        mCurrentFuncKey = DEF_KEY;
-        setVisibility(false);
     }
 
     public void toggleFuncView(int key, boolean isSoftKeyboardPop, EditText editText) {
@@ -108,10 +109,17 @@ public class FuncLayout extends LinearLayout {
         this.mHeight = height;
     }
 
+    public void updateNavHeight(int navHeight) {
+        this.navHeight = navHeight;
+        setVisibility(visibility);
+    }
+
+    private boolean visibility = false;
+
     public void setVisibility(boolean b) {
+        visibility = b;
         LayoutParams params = (LayoutParams) getLayoutParams();
         if (b) {
-            setVisibility(VISIBLE);
             params.height = mHeight;
             if (mListenerList != null) {
                 for (OnFuncKeyBoardListener l : mListenerList) {
@@ -119,7 +127,6 @@ public class FuncLayout extends LinearLayout {
                 }
             }
         } else {
-            setVisibility(GONE);
             params.height = 0;
             if (mListenerList != null) {
                 for (OnFuncKeyBoardListener l : mListenerList) {
@@ -127,6 +134,7 @@ public class FuncLayout extends LinearLayout {
                 }
             }
         }
+        params.bottomMargin = navHeight;
         setLayoutParams(params);
     }
 
