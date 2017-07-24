@@ -2,6 +2,7 @@ package com.codebear.keyboard.widget;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class RecordIndicator {
     private static int[] amps = {R.mipmap.amp1, R.mipmap.amp2, R.mipmap.amp3, R.mipmap.amp4, R.mipmap.amp5, R.mipmap
             .amp6, R.mipmap.amp7};
 
+    private View mContentView;
     private Dialog recordDialog;
     private ViewFlipper viewFlipper;
     private ImageView volumeAnim;
@@ -45,13 +47,13 @@ public class RecordIndicator {
     }
 
     private void initDialog() {
-        View view = View.inflate(mContext, R.layout.dialog_record_indicator, null);
-        viewFlipper = (ViewFlipper) view.findViewById(R.id.vf_record);
-        volumeAnim = (ImageView) view.findViewById(R.id.iv_record_amp);
+        mContentView = View.inflate(mContext, R.layout.dialog_record_indicator, null);
+        viewFlipper = (ViewFlipper) mContentView.findViewById(R.id.vf_record);
+        volumeAnim = (ImageView) mContentView.findViewById(R.id.iv_record_amp);
         viewFlipper.setDisplayedChild(0);
 
         recordDialog = new Dialog(mContext, R.style.preview_dialog_style);
-        recordDialog.setContentView(view);
+        recordDialog.setContentView(mContentView);
     }
 
     private void show() {
@@ -85,6 +87,7 @@ public class RecordIndicator {
         if (decibelRank < 0 || decibelRank > 6) {
             decibelRank = 0;
         }
+        Log.i("volumeAnim", decibelRank + "--");
         volumeAnim.setImageResource(amps[decibelRank]);
     }
 
@@ -166,12 +169,12 @@ public class RecordIndicator {
     }
 
     private void cancelRecord(boolean dismiss) {
-        if (decibelThread != null) {
-            decibelThread.exit();
-            decibelThread = null;
-        }
         showView(RecordIndicator.RecordView.CANCEL_VIEW);
         if (dismiss) {
+            if (decibelThread != null) {
+                decibelThread.exit();
+                decibelThread = null;
+            }
             onRecordListener.recordCancel();
             dismissRecordIndicator(600);
         }
@@ -257,7 +260,7 @@ public class RecordIndicator {
                 if (onRecordListener == null || !running) {
                     break;
                 }
-                viewFlipper.post(new Runnable() {
+                recordButton.post(new Runnable() {
                     @Override
                     public void run() {
                         setRecordDecibel(onRecordListener.getRecordDecibel());
