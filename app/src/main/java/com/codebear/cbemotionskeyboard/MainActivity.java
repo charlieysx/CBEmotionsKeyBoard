@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRecordButton() {
         recordIndicator = new RecordIndicator(this);
-        cbEmoticonsKeyBoard.setRecordIndicator(recordIndicator);
+        recordIndicator.setRecordButton(cbEmoticonsKeyBoard.getVoiceBtn());
         recordIndicator.setOnRecordListener(new RecordIndicator.OnRecordListener() {
             @Override
             public void recordStart() {

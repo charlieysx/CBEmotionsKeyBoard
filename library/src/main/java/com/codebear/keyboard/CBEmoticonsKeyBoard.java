@@ -21,7 +21,6 @@ import com.codebear.keyboard.utils.EmoticonsKeyboardUtils;
 import com.codebear.keyboard.widget.AutoHeightLayout;
 import com.codebear.keyboard.widget.EmoticonsEditText;
 import com.codebear.keyboard.widget.FuncLayout;
-import com.codebear.keyboard.widget.RecordIndicator;
 
 /**
  * description:
@@ -57,9 +56,6 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
      */
     private int clickFunc = 0;
 
-    private RecordIndicator recordIndicator;
-    private boolean initRecordIndicator = false;
-
     public CBEmoticonsKeyBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -91,11 +87,6 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         mBtnMultimedia.setOnClickListener(this);
         mEtChat.setOnBackKeyClickListener(this);
         funFunction.setOnFuncChangeListener(this);
-
-        if (recordIndicator != null && !initRecordIndicator) {
-            initRecordIndicator = true;
-            recordIndicator.setRecordButton(mBtnVoice);
-        }
     }
 
     protected void initFuncView() {
@@ -357,17 +348,14 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
         return mBtnSend;
     }
 
+    public Button getVoiceBtn() {
+        return mBtnVoice;
+    }
+
     public void delClick() {
         int action = KeyEvent.ACTION_DOWN;
         int code = KeyEvent.KEYCODE_DEL;
         KeyEvent event = new KeyEvent(action, code);
         mEtChat.onKeyDown(KeyEvent.KEYCODE_DEL, event);
-    }
-
-    public void setRecordIndicator(RecordIndicator recordIndicator) {
-        this.recordIndicator = recordIndicator;
-        if(mBtnVoice != null && !initRecordIndicator) {
-            recordIndicator.setRecordButton(mBtnVoice);
-        }
     }
 }
