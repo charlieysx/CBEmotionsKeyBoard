@@ -28,7 +28,6 @@ public class RecordIndicator {
     private static int[] amps = {R.mipmap.amp1, R.mipmap.amp2, R.mipmap.amp3, R.mipmap.amp4, R.mipmap.amp5, R.mipmap
             .amp6, R.mipmap.amp7};
 
-    private View mContentView;
     private Dialog recordDialog;
     private ViewFlipper viewFlipper;
     private ImageView volumeAnim;
@@ -47,13 +46,13 @@ public class RecordIndicator {
     }
 
     private void initDialog() {
-        mContentView = View.inflate(mContext, R.layout.dialog_record_indicator, null);
-        viewFlipper = (ViewFlipper) mContentView.findViewById(R.id.vf_record);
-        volumeAnim = (ImageView) mContentView.findViewById(R.id.iv_record_amp);
+        View view = View.inflate(mContext, R.layout.dialog_record_indicator, null);
+        viewFlipper = (ViewFlipper) view.findViewById(R.id.vf_record);
+        volumeAnim = (ImageView) view.findViewById(R.id.iv_record_amp);
         viewFlipper.setDisplayedChild(0);
 
         recordDialog = new Dialog(mContext, R.style.preview_dialog_style);
-        recordDialog.setContentView(mContentView);
+        recordDialog.setContentView(view);
     }
 
     private void show() {
