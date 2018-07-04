@@ -7,8 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.codebear.keyboard.CBEmoticonsKeyBoard;
@@ -34,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //去除标题栏
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //去除状态栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         initRecycleView();
@@ -194,5 +202,14 @@ public class MainActivity extends AppCompatActivity {
     private void cancelRecord() {
         recordUtil.cancel();
         Toast.makeText(this, "取消录音", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        // 如果设置了全屏，需要调用改方法
+        if (!cbEmoticonsKeyBoard.dispatchKeyEventInFullScreen(event)) {
+            return super.dispatchKeyEvent(event);
+        }
+        return false;
     }
 }

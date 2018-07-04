@@ -57,7 +57,6 @@ public class RecordIndicator {
     private void show() {
         if (recordDialog != null && !recordDialog.isShowing()) {
             recordDialog.show();
-
         }
     }
 

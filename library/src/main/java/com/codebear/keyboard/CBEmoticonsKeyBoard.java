@@ -324,6 +324,9 @@ public class CBEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClic
     }
 
     public boolean dispatchKeyEventInFullScreen(KeyEvent event) {
+        if (!EmoticonsKeyboardUtils.isFullScreen((Activity) getContext())) {
+            return false;
+        }
         if (event == null) {
             return false;
         }

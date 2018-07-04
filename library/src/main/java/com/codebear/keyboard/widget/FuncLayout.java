@@ -138,6 +138,11 @@ public class FuncLayout extends LinearLayout {
         setLayoutParams(params);
     }
 
+    @Override
+    public boolean isShown() {
+        return mCurrentFuncKey != DEF_KEY;
+    }
+
     public boolean isOnlyShowSoftKeyboard() {
         return mCurrentFuncKey == DEF_KEY;
     }
